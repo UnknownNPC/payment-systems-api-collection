@@ -46,11 +46,11 @@ lazy val qiwi = project
 lazy val dependencies =
   new {
     val logbackV = "1.2.3"
-    val scalaLoggingV = "3.7.2"
+    val scalaLoggingV = "3.9.2"
     val slf4jV = "1.7.25"
-    val typesafeConfigV = "1.3.1"
-    val scalatestV = "3.0.4"
-    val scalacheckV = "1.13.5"
+    val typesafeConfigV = "1.3.4"
+    val scalatestV = "3.0.8"
+    val scalacheckV = "1.14.0"
 
     val logback = "ch.qos.logback" % "logback-classic" % logbackV
     val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingV
@@ -69,8 +69,7 @@ lazy val commonDependencies = Seq(
 
 lazy val settings =
   commonSettings ++
-    wartremoverSettings ++
-    scalafmtSettings
+    wartremoverSettings
 
 lazy val compilerOptions = Seq(
   "-unchecked",
@@ -94,15 +93,9 @@ lazy val commonSettings = Seq(
 )
 
 lazy val wartremoverSettings = Seq(
-  wartremoverWarnings in (Compile, compile) ++= Warts.allBut(Wart.Throw)
+  wartremoverWarnings in (Compile, compile) ++= Warts
+    .allBut(Wart.Throw, Wart.DefaultArguments)
 )
-
-lazy val scalafmtSettings =
-  Seq(
-    scalafmtOnCompile := true,
-    scalafmtTestOnCompile := true,
-    scalafmtVersion := "1.5.0"
-  )
 
 lazy val assemblySettings = Seq(
   assemblyJarName in assembly := name.value + ".jar",
