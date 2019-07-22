@@ -17,7 +17,9 @@ lazy val api = project
   .settings(
     name := "api",
     settings,
-    libraryDependencies ++= commonDependencies
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.httpClient
+    )
   )
   .disablePlugins(AssemblyPlugin)
 
@@ -26,7 +28,9 @@ lazy val privat24 = project
     name := "privat24",
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq()
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.scalaXml
+    )
   )
   .dependsOn(
     api
@@ -45,18 +49,26 @@ lazy val qiwi = project
 
 lazy val dependencies =
   new {
-    val logbackV = "1.2.3"
-    val scalaLoggingV = "3.9.2"
-    val slf4jV = "1.7.25"
-    val typesafeConfigV = "1.3.4"
-    val scalatestV = "3.0.8"
-    val scalacheckV = "1.14.0"
+    private val logbackV = "1.2.3"
+    private val scalaLoggingV = "3.9.2"
+    private val slf4jV = "1.7.25"
+    private val typesafeConfigV = "1.3.4"
+    private val catsV = "2.0.0-M4"
+    private val scalatestV = "3.0.8"
+    private val scalacheckV = "1.14.0"
+    private val httpClientV = "4.5.9"
+    private val scalaXmlV = "1.2.0"
+    private val mockitoV = "1.5.12"
 
     val logback = "ch.qos.logback" % "logback-classic" % logbackV
     val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingV
     val typesafeConfig = "com.typesafe" % "config" % typesafeConfigV
     val scalatest = "org.scalatest" %% "scalatest" % scalatestV
+    val httpClient = "org.apache.httpcomponents" % "httpclient" % httpClientV
     val scalacheck = "org.scalacheck" %% "scalacheck" % scalacheckV
+    val scalaXml = "org.scala-lang.modules" %% "scala-xml" % scalaXmlV
+    val cats = "org.typelevel" %% "cats-core" % catsV
+    val mockito = "org.mockito" %% "mockito-scala" % mockitoV
   }
 
 lazy val commonDependencies = Seq(
@@ -64,7 +76,8 @@ lazy val commonDependencies = Seq(
   dependencies.scalaLogging,
   dependencies.typesafeConfig,
   dependencies.scalatest % "test",
-  dependencies.scalacheck % "test"
+  dependencies.scalacheck % "test",
+  dependencies.mockito % "test"
 )
 
 lazy val settings =
@@ -93,15 +106,15 @@ lazy val commonSettings = Seq(
 )
 
 lazy val wartremoverSettings = Seq(
-  wartremoverWarnings in (Compile, compile) ++= Warts
+  wartremoverWarnings in(Compile, compile) ++= Warts
     .allBut(Wart.Throw, Wart.DefaultArguments)
 )
 
 lazy val assemblySettings = Seq(
   assemblyJarName in assembly := name.value + ".jar",
   assemblyMergeStrategy in assembly := {
-    case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-    case "application.conf"            => MergeStrategy.concat
+    case PathList("META-INF", xs@_*) => MergeStrategy.discard
+    case "application.conf" => MergeStrategy.concat
     case x =>
       val oldStrategy = (assemblyMergeStrategy in assembly).value
       oldStrategy(x)
