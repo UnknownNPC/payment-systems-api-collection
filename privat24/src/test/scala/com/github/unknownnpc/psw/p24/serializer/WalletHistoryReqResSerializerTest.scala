@@ -7,7 +7,7 @@ import org.scalatest.{FunSpec, Matchers}
 
 class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
-  it("serialize to string") {
+  it("serialize to request") {
 
     val waitField = 1
     val testFieldVal = 2
@@ -70,7 +70,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
   }
 
-  it("serialize from string") {
+  it("serialize from response") {
 
     val idVal = 1
     val signatureVal = "553995c5ccc8c81815b58cf6374f68f00a28bbd7"

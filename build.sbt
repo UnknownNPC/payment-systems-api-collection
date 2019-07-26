@@ -41,7 +41,9 @@ lazy val qiwi = project
     name := "qiwi",
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq()
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.json4s
+    )
   )
   .dependsOn(
     api
@@ -59,6 +61,7 @@ lazy val dependencies =
     private val httpClientV = "4.5.9"
     private val scalaXmlV = "1.2.0"
     private val mockitoV = "1.5.12"
+    private val json4sV = "3.6.7"
 
     val logback = "ch.qos.logback" % "logback-classic" % logbackV
     val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingV
@@ -69,6 +72,7 @@ lazy val dependencies =
     val scalaXml = "org.scala-lang.modules" %% "scala-xml" % scalaXmlV
     val cats = "org.typelevel" %% "cats-core" % catsV
     val mockito = "org.mockito" %% "mockito-scala" % mockitoV
+    val json4s = "org.json4s" %% "json4s-native" % json4sV
   }
 
 lazy val commonDependencies = Seq(
@@ -107,7 +111,7 @@ lazy val commonSettings = Seq(
 
 lazy val wartremoverSettings = Seq(
   wartremoverWarnings in(Compile, compile) ++= Warts
-    .allBut(Wart.Throw, Wart.DefaultArguments)
+    .allBut(Wart.Throw, Wart.DefaultArguments, Wart.PublicInference, Wart.FinalCaseClass)
 )
 
 lazy val assemblySettings = Seq(

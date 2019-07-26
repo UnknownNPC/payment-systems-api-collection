@@ -5,7 +5,7 @@ import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.util.EntityUtils
 
 
-sealed trait RestHttpExecutor[REQ <: HttpUriRequest] extends Executor[REQ, String] {
+trait RestHttpExecutor[REQ <: HttpUriRequest] extends Executor[REQ, String] {
 
   def httpClient: CloseableHttpClient
 
@@ -15,7 +15,3 @@ sealed trait RestHttpExecutor[REQ <: HttpUriRequest] extends Executor[REQ, Strin
   }
 
 }
-
-trait GetRestHttpExecutor extends RestHttpExecutor[HttpGet]
-
-trait PostRestHttpExecutor extends RestHttpExecutor[HttpPost]
