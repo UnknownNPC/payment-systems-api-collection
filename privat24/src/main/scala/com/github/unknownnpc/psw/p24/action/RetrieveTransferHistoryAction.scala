@@ -11,8 +11,8 @@ private[action] trait RetrieveTransferHistoryAction extends
 
 object RetrieveTransferHistoryAction {
 
-  def apply(httpClient: CloseableHttpClient): RetrieveTransferHistoryAction = new RetrieveTransferHistoryAction() {
-    override val httpClient: CloseableHttpClient = httpClient
+  def apply(httpClientParam: CloseableHttpClient): RetrieveTransferHistoryAction = new RetrieveTransferHistoryAction() {
+    override val httpClient: CloseableHttpClient = httpClientParam
   }
 
 }
