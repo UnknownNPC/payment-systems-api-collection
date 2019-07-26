@@ -91,7 +91,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     response.data.head.personId shouldBe 79112223344L
     response.data.head.date should not be null
     response.data.head.errorCode shouldBe 0
-    response.data.head.error should be (null)
+    response.data.head.error should be(null)
     response.data.head.status shouldBe ResStatus.SUCCESS
     response.data.head.statusText shouldBe "Успешно"
     response.data.head.trmTxnId shouldBe "1489826461807"

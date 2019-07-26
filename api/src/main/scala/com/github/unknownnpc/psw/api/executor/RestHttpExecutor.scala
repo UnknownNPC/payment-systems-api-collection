@@ -1,6 +1,6 @@
 package com.github.unknownnpc.psw.api.executor
 
-import org.apache.http.client.methods.{HttpGet, HttpPost, HttpUriRequest}
+import org.apache.http.client.methods.HttpUriRequest
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.util.EntityUtils
 

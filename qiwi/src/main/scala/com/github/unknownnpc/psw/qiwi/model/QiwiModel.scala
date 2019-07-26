@@ -4,9 +4,6 @@ import java.util.Date
 
 private[qiwi] object QiwiModel {
 
-  /**
-    * Rule: <= 100 запросов в минуту для одного и того же номера кошелька
-    */
   object WalletHistory {
 
     type StartEndDates = (Date, Date)
