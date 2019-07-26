@@ -85,8 +85,7 @@ lazy val commonDependencies = Seq(
 )
 
 lazy val settings =
-  commonSettings ++
-    wartremoverSettings
+  commonSettings
 
 lazy val compilerOptions = Seq(
   "-unchecked",
@@ -104,14 +103,8 @@ lazy val commonSettings = Seq(
   scalacOptions ++= compilerOptions,
   resolvers ++= Seq(
     Resolver.mavenLocal,
-    Resolver.sonatypeRepo("releases"),
-    Resolver.sonatypeRepo("snapshots")
+    Resolver.sonatypeRepo("releases")
   )
-)
-
-lazy val wartremoverSettings = Seq(
-  wartremoverWarnings in(Compile, compile) ++= Warts
-    .allBut(Wart.Throw, Wart.DefaultArguments, Wart.PublicInference, Wart.FinalCaseClass)
 )
 
 lazy val assemblySettings = Seq(
