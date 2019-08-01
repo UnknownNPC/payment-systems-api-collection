@@ -10,7 +10,8 @@ lazy val global = project
   .aggregate(
     api,
     privat24,
-    qiwi
+    qiwi,
+    webmoney
   )
 
 lazy val api = project
@@ -43,6 +44,19 @@ lazy val qiwi = project
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.json4s
+    )
+  )
+  .dependsOn(
+    api
+  )
+
+lazy val webmoney = project
+  .settings(
+    name := "webmoney",
+    settings,
+    assemblySettings,
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.scalaXml
     )
   )
   .dependsOn(

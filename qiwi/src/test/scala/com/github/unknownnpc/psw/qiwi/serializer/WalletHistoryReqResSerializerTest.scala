@@ -12,7 +12,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     val toDate = new Date(20000)
     val request = Request(
       "token", "wallet", 11, Some(ReqTransferType.IN), sources = List(ReqSources.QW_EUR, ReqSources.CARD),
-      Some(fromDate, toDate), Some(toDate, 2)
+      Some(fromDate, toDate), Some(toDate, 2L)
     )
 
     val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
