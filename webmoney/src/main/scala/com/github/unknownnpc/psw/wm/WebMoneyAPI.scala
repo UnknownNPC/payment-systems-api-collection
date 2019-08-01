@@ -12,6 +12,19 @@ import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 
 class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClient) {
 
+  /**
+    * Select wm wallet history, interface X3:
+    * https://wiki.webmoney.ru/projects/webmoney/wiki/%D0%98%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81_X3
+    *
+    * @param walletId the target wallet
+    * @param dateStart the date start
+    * @param dateFinish the date end
+    * @param wmtranidOpt the opt field
+    * @param tranidOpt the opt field
+    * @param wminvidOpt the opt field
+    * @param orderidOpt the opt field
+    * @return the payload or error
+    */
   def runX3Command(walletId: String, dateStart: Date, dateFinish: Date, wmtranidOpt: Option[Long] = None,
                    tranidOpt: Option[Long] = None, wminvidOpt: Option[Long], orderidOpt: Option[Long]): Either[APIException, X3.Response] = {
     signer.sign(Utils.wmReqnGen.toString + walletId) match {

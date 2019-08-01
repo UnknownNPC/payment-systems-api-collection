@@ -5,7 +5,7 @@ import com.github.unknownnpc.psw.qiwi.action.RetrieveTransferHistoryAction
 import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory
 import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory.{NextPage, ReqSources, ReqTransferType, StartEndDates}
 import com.github.unknownnpc.psw.qiwi.serializer.QiwiSerializer._
-import org.apache.http.impl.client.CloseableHttpClient
+import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 
 private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
 
@@ -34,6 +34,9 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
 
 object QiwiAPI {
 
-  def apply(token: String, httpClient: CloseableHttpClient): QiwiAPI = new QiwiAPI(token, httpClient)
+  def apply(token: String, httpClient: CloseableHttpClient = HttpClients.createDefault()): QiwiAPI =
+    new QiwiAPI(token, httpClient)
+
+  def getInstance(token: String) = apply(token)
 
 }
