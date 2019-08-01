@@ -1,5 +1,8 @@
 package com.github.unknownnpc.psw.wm
 
+import java.text.SimpleDateFormat
+import java.util.TimeZone
+
 object Utils {
 
   def bytes2UShort(bytes: Array[Byte]): Int = {
@@ -27,6 +30,12 @@ object Utils {
 
   def wmReqnGen: Long = {
     System.nanoTime().toString.takeRight(15).toLong
+  }
+
+  val WMDateFormatter: SimpleDateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss") {
+    setTimeZone(
+      TimeZone.getTimeZone("GMT+3")
+    )
   }
 
 }

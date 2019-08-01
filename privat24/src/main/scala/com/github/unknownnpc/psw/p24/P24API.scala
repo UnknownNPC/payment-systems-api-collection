@@ -3,6 +3,7 @@ package com.github.unknownnpc.psw.p24
 import java.text.SimpleDateFormat
 import java.util.Date
 
+import com.github.unknownnpc.psw.api.APIException
 import com.github.unknownnpc.psw.p24.action.RetrieveTransferHistoryAction
 import com.github.unknownnpc.psw.p24.model.P24Model.WalletHistory._
 import com.github.unknownnpc.psw.p24.model.P24Model.{Merchant, P24Credential}
@@ -13,7 +14,7 @@ private[p24] class P24API(credentials: P24Credential, httpClient: CloseableHttpC
 
   private val p24ReqDateFormatter = new SimpleDateFormat(WalletRequestHistoryDateFormat)
 
-  def retrieveTransferHistory(cardNum: String, from: Date, to: Date): WalletHistoryResponse = {
+  def retrieveTransferHistory(cardNum: String, from: Date, to: Date): Either[APIException, WalletHistoryResponse] = {
 
     val request = WalletHistoryRequest(
       credentials.pass,

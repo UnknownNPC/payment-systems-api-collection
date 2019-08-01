@@ -2,10 +2,11 @@ package com.github.unknownnpc.psw.wm.signer
 
 import java.math.BigInteger
 
+import com.github.unknownnpc.psw.api.InvalidParam
 import com.github.unknownnpc.psw.wm.Utils
 import javax.xml.bind.DatatypeConverter
 
-import scala.util.Random
+import scala.util.{Random, Try}
 
 private[wm] class WmSigner(wmid: String, pass: String, filePath: String, nextRandBytes: Array[Byte] => Unit = Random.nextBytes) {
 
@@ -22,30 +23,29 @@ private[wm] class WmSigner(wmid: String, pass: String, filePath: String, nextRan
   def sign(text: String): Either[Exception, String] = {
 
     if (isValidCrc) {
-      val exponentModulus = exponentAndModulus(secureBuffer)
-      val textMd4 = Utils.md4Hash(text.getBytes)
-      val random = Array.fill[Byte](40)(0)
-      nextRandBytes(random)
-      val baseBuff = Array.fill[Byte](58)(0)
-        .patch(2, textMd4, 16)
-        .patch(18, random, 40)
-      baseBuff(0) = 0x38
-      baseBuff(1) = 0x00
+      Try {
+        val exponentModulus = exponentAndModulus(secureBuffer)
+        val textMd4 = Utils.md4Hash(text.getBytes)
+        val random = Array.fill[Byte](40)(0)
+        nextRandBytes(random)
+        val baseBuff = Array.fill[Byte](58)(0)
+          .patch(2, textMd4, 16)
+          .patch(18, random, 40)
+        baseBuff(0) = 0x38
+        baseBuff(1) = 0x00
 
-      val baseBuffReverse = buffReverse(baseBuff.length, baseBuff)
-      val baseAsBigInt = new BigInteger(1, baseBuffReverse)
+        val baseBuffReverse = buffReverse(baseBuff.length, baseBuff)
+        val baseAsBigInt = new BigInteger(1, baseBuffReverse)
 
-      val rawSignature = baseAsBigInt.modPow(exponentModulus._1, exponentModulus._2).toByteArray
-      val hexSignature: String = DatatypeConverter.printHexBinary(rawSignature).toLowerCase
-      val hexSignatureWithoutZeros = fillEmptyHexBytesWithZeros(hexSignature)
-      val signature = reverseHexBytesOrder(hexSignatureWithoutZeros)
-      Right(signature)
+        val rawSignature = baseAsBigInt.modPow(exponentModulus._1, exponentModulus._2).toByteArray
+        val hexSignature: String = DatatypeConverter.printHexBinary(rawSignature).toLowerCase
+        val hexSignatureWithoutZeros = fillEmptyHexBytesWithZeros(hexSignature)
+        reverseHexBytesOrder(hexSignatureWithoutZeros)
+      }.toEither.left.map(e => InvalidParam(cause = e))
     } else {
-      Left(new Exception("invalid crc"))
+      Left(InvalidParam(cause = new Exception("Invalid kwm key structure")))
     }
   }
-
-  def isValidCrcVal = isValidCrc
 
   private def fillEmptyHexBytesWithZeros(hexSignature: String): String = {
     (0 until 132 - hexSignature.length).foldLeft(hexSignature) { case (arr, _) => "00" + arr }

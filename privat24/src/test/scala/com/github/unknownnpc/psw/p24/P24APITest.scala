@@ -49,7 +49,7 @@ class P24APITest extends FunSpec with Matchers with MockitoSugar {
       val response = p24API.retrieveTransferHistory("1", currentDate, currentDate)
 
       response should not be null
-      response.merchant.id shouldBe 75482L
+      response.right.get.merchant.id shouldBe 75482L
     }
 
   }
