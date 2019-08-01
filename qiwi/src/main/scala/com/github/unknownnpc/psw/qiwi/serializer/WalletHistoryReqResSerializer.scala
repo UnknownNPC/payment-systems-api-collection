@@ -1,7 +1,7 @@
 package com.github.unknownnpc.psw.qiwi.serializer
 
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.{Date, TimeZone}
 
 import com.github.unknownnpc.psw.api.Serializer
 import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory.{Request, ResStatus, Response}
@@ -20,7 +20,9 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Reque
   private val EndDateParam = "endDate"
   private val NextTxnDateParam = "nextTxnDate"
   private val NextTxnIdParam = "nextTxnId"
-  private val qiwiReqDateFormatter = new SimpleDateFormat(ReqDateFormat)
+  private val qiwiReqDateFormatter = new SimpleDateFormat(ReqDateFormat) {
+    setTimeZone(TimeZone.getTimeZone("GMT"))
+  }
 
   override def toReq(req: Request): HttpGet = {
 

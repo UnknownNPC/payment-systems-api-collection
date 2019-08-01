@@ -20,8 +20,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
     requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/wallet/payments?rows=11?" +
-      "operation=IN&sources=2&sources=3&startDate=1970-01-01T01:00:10+01:00&endDate=1970-01-01T01:00:20+01:00&" +
-      "nextTxnDate=1970-01-01T01:00:20+01:00&nextTxnId=2"
+      "operation=IN&sources=2&sources=3&startDate=1970-01-01T00:00:10Z&endDate=1970-01-01T00:00:20Z&nextTxnDate=1970-01-01T00:00:20Z&nextTxnId=2"
   }
 
   it("should serialize to request correctly when all params default") {
