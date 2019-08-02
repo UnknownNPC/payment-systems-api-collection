@@ -1,11 +1,12 @@
 name := "payment-systems-wrapper"
 scalaVersion := "2.13.0"
-organization in ThisBuild := "com.github.unknownnpc"
+organization in ThisBuild := "com.github.unknownnpc.psw"
 
 lazy val global = project
   .in(file("."))
-  .settings(settings)
-  .disablePlugins(AssemblyPlugin)
+  .settings(settings ++ Seq(
+    skip in publish := true
+  ))
   .aggregate(
     api,
     privat24,
@@ -19,15 +20,14 @@ lazy val api = project
     settings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.httpClient
-    )
+    ),
+    skip in publish := true
   )
-  .disablePlugins(AssemblyPlugin)
 
 lazy val privat24 = project
   .settings(
     name := "privat24",
     settings,
-    assemblySettings,
     mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.scalaXml
@@ -41,7 +41,6 @@ lazy val qiwi = project
   .settings(
     name := "qiwi",
     settings,
-    assemblySettings,
     mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.json4s
@@ -55,7 +54,6 @@ lazy val webmoney = project
   .settings(
     name := "webmoney",
     settings,
-    assemblySettings,
     mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.scalaXml
@@ -121,17 +119,6 @@ lazy val commonSettings = Seq(
     Resolver.mavenLocal,
     Resolver.sonatypeRepo("releases")
   )
-)
-
-lazy val assemblySettings = Seq(
-  assemblyJarName in assembly := name.value + ".jar",
-  assemblyMergeStrategy in assembly := {
-    case PathList("META-INF", xs@_*) => MergeStrategy.discard
-    case "application.conf" => MergeStrategy.concat
-    case x =>
-      val oldStrategy = (assemblyMergeStrategy in assembly).value
-      oldStrategy(x)
-  }
 )
 
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
