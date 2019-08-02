@@ -42,32 +42,10 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
     requestSample should not be null
     requestSample.getAllHeaders.toList shouldBe List()
-    EntityUtils.toString(requestSample.getEntity) shouldBe
-      s"""<xml version="1.0" encoding="UTF-8"><request version="1.0">
-         |      <merchant>
-         |      <id>
-         |        $merchantIdVal
-         |      </id>
-         |      <signature>
-         |        9AFA660B9C2A6AB3FD47FE433261EAD45DDFE45A
-         |      </signature>
-         |    </merchant><data>
-         |      <oper>
-         |        $operVal
-         |      </oper>
-         |      <wait>
-         |        $waitField
-         |      </wait>
-         |      <test>
-         |        $testFieldVal
-         |      </test>
-         |      <payment id="$paymentId">
-         |        <prop name="$cardPropName" value="$cardPropVal"/><prop name="$fromPropName" value="$fromPropVal"/><prop name="$toPropName" value="$toPropVal"/>
-         |      </payment>
-         |    </data>
-         |    </request>"""
-        .stripMargin
-
+    EntityUtils.toString(requestSample.getEntity) shouldBe "<request version=\"1.0\"><xml version=\"1.0\" encoding=\"UTF-8\">" +
+      "<merchant><id>3</id><signature>4868fb6901c599cea3598b9d4abf76987e9d1438</signature></merchant><data><oper>oper</oper>" +
+      "<wait>1</wait><test>2</test><payment id=\"id\"><prop name=\"card\" value=\"cardNum\"></prop><prop name=\"sd\" " +
+      "value=\"01.12.1992\"></prop><prop name=\"sd\" value=\"01.12.1992\"></prop></payment></data></xml></request>"
   }
 
   it("serialize from response") {

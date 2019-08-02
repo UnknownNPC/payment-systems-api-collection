@@ -19,23 +19,25 @@ private[p24] class P24API(credentials: P24Credential, httpClient: CloseableHttpC
     * https://api.privatbank.ua/#p24/orders
     *
     * @param cardNum the target card num
-    * @param from the from date
-    * @param to the to date
+    * @param from    the from date
+    * @param to      the to date
     * @return the response payload or error
     */
-  def retrieveTransferHistory(cardNum: String, from: Date, to: Date): Either[APIException, WalletHistoryResponse] = {
+  def retrieveTransferHistory(cardNum: String, from: Date, to: Date, waitVal: Long = 15): Either[APIException, WalletHistoryResponse] = {
 
     val request = WalletHistoryRequest(
       credentials.pass,
       Merchant(credentials.id, None),
-      WalletHistoryRequestData(payment =
-        WalletHistoryRequestDataPayment(
-          props = List(
-            WalletHistoryRequestDataProp(WalletRequestHistoryCardName, cardNum),
-            WalletHistoryRequestDataProp(WalletRequestHistoryFromDate, p24ReqDateFormatter.format(from)),
-            WalletHistoryRequestDataProp(WalletRequestHistoryToDate, p24ReqDateFormatter.format(to))
+      WalletHistoryRequestData(
+        waitField = waitVal,
+        payment =
+          WalletHistoryRequestDataPayment(
+            props = List(
+              WalletHistoryRequestDataProp(WalletRequestHistoryFromDate, p24ReqDateFormatter.format(from)),
+              WalletHistoryRequestDataProp(WalletRequestHistoryToDate, p24ReqDateFormatter.format(to)),
+              WalletHistoryRequestDataProp(WalletRequestHistoryCardName, cardNum)
+            )
           )
-        )
       )
     )
 
