@@ -1,5 +1,4 @@
 name := "payment-systems-wrapper"
-version := "0.1"
 scalaVersion := "2.13.0"
 organization in ThisBuild := "com.github.unknownnpc"
 
@@ -130,4 +129,46 @@ lazy val assemblySettings = Seq(
       val oldStrategy = (assemblyMergeStrategy in assembly).value
       oldStrategy(x)
   }
+)
+
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+
+lazy val mavenPublishSettings = Seq(
+  homepage := Some(url("https://github.com/UnknownNPC/payment-systems-wrapper")),
+  licenses := Seq("MIT" -> url("https://github.com/UnknownNPC/payment-systems-wrapper/LICENSE.md")),
+  publishMavenStyle := true,
+  publishArtifact in Test := false,
+  pomIncludeRepository := { _ => false },
+  publishTo in ThisBuild := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value)
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  },
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/UnknownNPC/payment-systems-wrapper"),
+      "scm:git:git@github.com:UnknownNPC/payment-systems-wrapper.git"
+    )
+  ),
+  developers := List(
+    Developer("UnknownNPC", "Vitalii Zymukha", "unknownvzzv@gmai.com", url("https://github.com/UnknownNPC"))
+  ),
+  releaseCrossBuild := true,
+  releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+  releaseProcess := Seq[ReleaseStep](
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    publishArtifacts,
+    setNextVersion,
+    commitNextVersion,
+    ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
+    pushChanges
+  )
 )
