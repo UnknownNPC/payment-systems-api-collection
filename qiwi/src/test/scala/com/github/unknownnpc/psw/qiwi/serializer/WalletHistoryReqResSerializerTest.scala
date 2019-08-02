@@ -19,7 +19,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
-    requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/wallet/payments?rows=11?" +
+    requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/wallet/payments?rows=11&" +
       "operation=IN&sources=2&sources=3&startDate=1970-01-01T00:00:10Z&endDate=1970-01-01T00:00:20Z&nextTxnDate=1970-01-01T00:00:20Z&nextTxnId=2"
   }
 
@@ -28,11 +28,20 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
-    requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/wallet/payments?rows=11?"
+    requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/wallet/payments?rows=11&"
   }
 
-  it("serialize from response") {
+  it("should serialize to request with valid headers") {
+    val token = "token123"
+    val request = Request(token, "wallet", 11)
+    val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
+    requestSample.getAllHeaders.head.getName shouldBe "Authorization"
+    requestSample.getAllHeaders.head.getValue shouldBe s"Bearer $token"
+    requestSample.getAllHeaders.lift(1).get.getName shouldBe "Accept"
+    requestSample.getAllHeaders.lift(1).get.getValue shouldBe "application/json"
+  }
 
+  it("serialize from full response") {
     val responseStr =
       """{"data":
         |	[
@@ -113,6 +122,14 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     response.data.head.repeatPaymentEnabled shouldBe Some(false)
     response.data.head.favoritePaymentEnabled shouldBe None
     response.data.head.regularPaymentEnabled shouldBe None
+  }
+
+  it("serialize from empty response") {
+    val responseStr = "{\"data\":[],\"nextTxnId\":null,\"nextTxnDate\":null}"
+    val response = QiwiSerializer.walletHistoryReqResSerializer.fromRes(responseStr)
+    response.data should have length 0
+    response.nextTxnDate shouldBe None
+    response.nextTxnId shouldBe None
   }
 
 }

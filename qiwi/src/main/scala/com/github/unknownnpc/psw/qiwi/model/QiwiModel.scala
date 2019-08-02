@@ -32,7 +32,7 @@ private[qiwi] object QiwiModel {
                        sources: List[ReqSources.Value] = List.empty, startEndDates: Option[StartEndDates] = None,
                        nextPage: Option[NextPage] = None)
 
-    case class Response(data: List[ResponseData], nextTxnId: Long, nextTxnDate: Date)
+    case class Response(data: List[ResponseData], nextTxnId: Option[Long], nextTxnDate: Option[Date])
     case class ResponseData(txnId: Long, personId: Long, date: Date, errorCode: Long, error: String, status: ResStatus.Value,
                             statusText: String, trmTxnId: String, account: String, sum: ResponseAmountCurrency, total: ResponseAmountCurrency,
                             provider: ResponseProvider, comment: String, currencyRate: BigDecimal, chequeReady: Option[Boolean],

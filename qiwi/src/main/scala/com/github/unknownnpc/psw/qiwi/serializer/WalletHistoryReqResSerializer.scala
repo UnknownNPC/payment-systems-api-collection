@@ -11,7 +11,7 @@ import org.json4s.JsonAST.JString
 
 private[serializer] class WalletHistoryReqResSerializer extends Serializer[Request, Response, HttpGet, String] {
 
-  private val urlTarget: String = "https://edge.qiwi.com/payment-history/v2/persons/%s/payments?rows=%s?"
+  private val urlTarget: String = "https://edge.qiwi.com/payment-history/v2/persons/%s/payments?rows=%s&"
 
   private val ReqDateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
   private val OperationParam = "operation"
@@ -45,7 +45,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Reque
     val paramsStr = paramsList.map(_.mkString("&")).getOrElse("")
     val fullRequestUrl = String.format(urlTarget, req.wallet, req.rows.toString) + paramsStr
     val httpGet = new HttpGet(fullRequestUrl)
-    httpGet.setHeader("Authorization", "Basic " + req.apiToken)
+    httpGet.setHeader("Authorization", "Bearer " + req.apiToken)
     httpGet.setHeader("Accept", "application/json")
 
     httpGet

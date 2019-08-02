@@ -13,7 +13,7 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
     * Warn: API limit is ltq 100 requests per minute, otherwise client ban for 5 minunutes
     * https://developer.qiwi.com/ru/qiwi-wallet-personal/#payments_list
     *
-    * @param wallet        the qiwi wallet
+    * @param wallet        the qiwi wallet, without `+` char
     * @param rows          the number of transactions, max is 50
     * @param operation     the operation type
     * @param sources       the sources
