@@ -20,10 +20,32 @@ sbt clean compile
 #### Usage in pom.xml
 ```
 <dependencies>
-...
+    <!-- QIWI API -->
+    <dependency>
+        <groupId>com.github.unknownnpc.psw</groupId>
+        <artifactId>qiwi_2.12</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+    <!-- WebMoney API -->
+    <dependency>
+        <groupId>com.github.unknownnpc.psw</groupId>
+        <artifactId>webmoney_2.12</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+    <!-- Privat24 API -->
+    <dependency>
+        <groupId>com.github.unknownnpc.psw</groupId>
+        <artifactId>privat24_2.12</artifactId>
+        <version>0.0.1</version>
+    </dependency>
 </dependencies>
 ```
-
+#### Usage in java code
+```
+P24API p24Api = P24API.getInstance(new P24Model.P24Credential(1, "merch_id"));
+QiwiAPI qiwiApi = QiwiAPI.getInstance("token");
+WebMoneyAPI webMoneyApi = WebMoneyAPI.getInstance("wimd", "password", "/kwmPath/test.kwm");        
+```
 
 #### API details
 | Payment system  | Action/Tool | URL | Class | Check on live data|
