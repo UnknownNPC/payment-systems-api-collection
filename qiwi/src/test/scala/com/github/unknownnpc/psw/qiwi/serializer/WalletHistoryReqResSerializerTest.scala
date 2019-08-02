@@ -93,7 +93,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
     val response = QiwiSerializer.walletHistoryReqResSerializer.fromRes(responseStr)
 
-    response.nextTxnId shouldBe 9001
+    response.nextTxnId shouldBe Some(9001)
     response.nextTxnDate should not be null
     response.data.head.txnId shouldBe 9309L
     response.data.head.personId shouldBe 79112223344L
