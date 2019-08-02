@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/UnknownNPC/payment-systems-wrapper.svg?branch=master)](https://travis-ci.org/UnknownNPC/payment-systems-wrapper)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/privat24_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/privat24_2.12)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/webmoney_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/webmoney_2.12)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/qiwi_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/qiwi_2.12)
 
 payment-systems-wrapper
 =====================
