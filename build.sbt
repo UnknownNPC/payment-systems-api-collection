@@ -28,6 +28,7 @@ lazy val privat24 = project
     name := "privat24",
     settings,
     assemblySettings,
+    mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.scalaXml
     )
@@ -41,6 +42,7 @@ lazy val qiwi = project
     name := "qiwi",
     settings,
     assemblySettings,
+    mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.json4s
     )
@@ -54,6 +56,7 @@ lazy val webmoney = project
     name := "webmoney",
     settings,
     assemblySettings,
+    mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.scalaXml
     )
