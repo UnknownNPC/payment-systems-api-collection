@@ -47,6 +47,7 @@ sbt clean compile
 ```
 P24API p24Api = P24API.getInstance(new P24Model.P24Credential(1, "merch_id"));
 QiwiAPI qiwiApi = QiwiAPI.getInstance("token");
+// Requires KWM backup key(!)
 WebMoneyAPI webMoneyApi = WebMoneyAPI.getInstance("wimd", "password", "/kwmPath/test.kwm");        
 ```
 
@@ -55,5 +56,5 @@ WebMoneyAPI webMoneyApi = WebMoneyAPI.getInstance("wimd", "password", "/kwmPath/
 | ------------- | ------------- |------|-------|------|
 | Privat24  | Select card history | [P24 API docs](https://api.privatbank.ua/#p24/orders) | p24.P24API#retrieveTransferHistory| _Yes_ |
 | Qiwi  | Payments list  |[QIWI API docs](https://developer.qiwi.com/ru/qiwi-wallet-personal/#payments_list)| qiwi.QiwiAPI#retrieveTransferHistory | _Partially_ |
-| WebMoney  | Payments list, interface X3  |[WM API docs](https://wiki.webmoney.ru/projects/webmoney/wiki/%D0%98%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81_X3)| wm.WebMoneyAPI#runX3Command | No |
+| WebMoney  | Payments list, interface X3  |[WM API docs](https://wiki.webmoney.ru/projects/webmoney/wiki/%D0%98%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81_X3)| wm.WebMoneyAPI#runX3Command | _Partially_ |
 | WebMoney  | WM Signer  |[WM Signer docs](https://wiki.wmtransfer.com/projects/webmoney/wiki/WMSigner)| wm.signer.WMSigner | _Yes_ |

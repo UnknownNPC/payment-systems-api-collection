@@ -12,7 +12,7 @@ class X3ReqResSerializerTest extends FunSpec with Matchers {
 
   it("serialize to request") {
     val testDate = new Date(0)
-    val request = X3.Request("wmid", "sign", List(
+    val request = X3.Request("wmid", "sign", "reqN", List(
       RequestOperation("purse", "walletId"),
       RequestOperation("datestart", WMDateFormatter.format(testDate)),
       RequestOperation("datefinish", WMDateFormatter.format(testDate)),
@@ -25,20 +25,15 @@ class X3ReqResSerializerTest extends FunSpec with Matchers {
     requestSample should not be null
     requestSample.getAllHeaders.toList shouldBe List()
     val requestBody = EntityUtils.toString(requestSample.getEntity)
-    requestBody should include(
+    requestBody shouldBe
       """<w3s.request>
-        |        <reqn>""".stripMargin)
-    requestBody should include(
-      """    </reqn>
-        |        <wmid>
-        |          wmid
-        |        </wmid>
-        |        <sign>
-        |          sign
-        |        </sign><getoperations>
+        |        <reqn>reqN</reqn>
+        |        <wmid>wmid</wmid>
+        |        <sign>sign</sign>
+        |        <getoperations>
         |        <purse>walletId</purse><datestart>19700101 03:00:00</datestart><datefinish>19700101 03:00:00</datefinish><wmtranid>wmtranid</wmtranid><tranid>tranid</tranid><wminvid>wminvid</wminvid><orderid>orderid</orderid>
         |      </getoperations>
-        |      </w3s.request>""".stripMargin)
+        |      </w3s.request>""".stripMargin
   }
 
   it("serialize from response") {

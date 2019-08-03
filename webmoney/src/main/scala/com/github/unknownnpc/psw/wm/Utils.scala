@@ -29,7 +29,7 @@ object Utils {
   }
 
   def wmReqnGen: Long = {
-    System.nanoTime().toString.takeRight(15).toLong
+    System.nanoTime().toString.concat("0").takeRight(15).toLong
   }
 
   val WMDateFormatter: SimpleDateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss") {

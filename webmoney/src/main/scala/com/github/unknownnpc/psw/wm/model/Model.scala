@@ -4,7 +4,7 @@ object Model {
 
   object X3 {
 
-    case class Request(wmid: String, sign: String, operations: List[RequestOperation])
+    case class Request(wmid: String, signature: String, requestN: String, operations: List[RequestOperation])
     case class RequestOperation(name: String, value: String)
 
     object RetVal extends Enumeration {

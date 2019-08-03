@@ -14,9 +14,15 @@ class UtilsTest extends FunSpec with Matchers {
     Utils.bytes2UInt(Array(1, 0, 0, 0)) shouldBe 1
   }
 
-  it("wmReqnGen") {
+  it("wmReqnGen values") {
     (0 to 100).forall(_ => {
       Utils.wmReqnGen < Utils.wmReqnGen
+    }) shouldBe true
+  }
+
+  it("wmReqnGen sizes") {
+    (0 to 100).forall(_ => {
+      Utils.wmReqnGen.toString.length == 15
     }) shouldBe true
   }
 

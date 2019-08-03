@@ -4,11 +4,12 @@ import java.util.Date
 
 import com.github.unknownnpc.psw.api.{APIException, InvalidParam}
 import com.github.unknownnpc.psw.wm.action.X3Action
+import com.github.unknownnpc.psw.wm.client.InsecureHttpClient
 import com.github.unknownnpc.psw.wm.model.Model.X3
 import com.github.unknownnpc.psw.wm.model.Model.X3.RequestOperation
 import com.github.unknownnpc.psw.wm.serializer.WebMoneySerializer._
 import com.github.unknownnpc.psw.wm.signer.WmSigner
-import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
+import org.apache.http.impl.client.CloseableHttpClient
 
 class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClient) {
 
@@ -26,11 +27,12 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
     * @return the payload or error
     */
   def runX3Command(walletId: String, dateStart: Date, dateFinish: Date, wmtranidOpt: Option[Long] = None,
-                   tranidOpt: Option[Long] = None, wminvidOpt: Option[Long], orderidOpt: Option[Long]): Either[APIException, X3.Response] = {
-    signer.sign(Utils.wmReqnGen.toString + walletId) match {
+                   tranidOpt: Option[Long] = None, wminvidOpt: Option[Long] = None, orderidOpt: Option[Long] = None): Either[APIException, X3.Response] = {
+    val requestN = Utils.wmReqnGen.toString
+    signer.sign(walletId + requestN) match {
       case Left(e) =>
         Left(InvalidParam(cause = e))
-      case Right(value) =>
+      case Right(signature) =>
         val operationOpts = List(
           Some(RequestOperation("purse", walletId)),
           Some(RequestOperation("datestart", Utils.WMDateFormatter.format(dateStart))),
@@ -41,7 +43,7 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
           orderidOpt.map(orderid => RequestOperation("orderid", orderid.toString))
         )
 
-        val x3Request = X3.Request(wmid, value, operationOpts.flatten)
+        val x3Request = X3.Request(wmid, signature, requestN, operationOpts.flatten)
         X3Action(httpClient).run(x3Request)
     }
   }
@@ -51,7 +53,7 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
 object WebMoneyAPI {
 
   def apply(wmid: String, password: String, kwmPath: String,
-            httpClient: CloseableHttpClient = HttpClients.createDefault()): WebMoneyAPI = {
+            httpClient: CloseableHttpClient = InsecureHttpClient.getInstance()): WebMoneyAPI = {
     val wmSigner = WmSigner(wmid, password, kwmPath)
 
     new WebMoneyAPI(wmSigner, wmid, httpClient)

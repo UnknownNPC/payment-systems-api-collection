@@ -1,7 +1,6 @@
 package com.github.unknownnpc.psw.wm.serializer
 
 import com.github.unknownnpc.psw.api.Serializer
-import com.github.unknownnpc.psw.wm.Utils
 import com.github.unknownnpc.psw.wm.model.Model.X3
 import com.github.unknownnpc.psw.wm.model.Model.X3._
 import org.apache.http.client.methods.HttpPost
@@ -33,15 +32,10 @@ private[serializer] class X3ReqResSerializer extends Serializer[X3.Request, X3.R
 
     def xmlReq(obj: X3.Request): Elem = {
       <w3s.request>
-        <reqn>
-          {Utils.wmReqnGen}
-        </reqn>
-        <wmid>
-          {obj.wmid}
-        </wmid>
-        <sign>
-          {obj.sign}
-        </sign>{operations(obj.operations)}
+        <reqn>{obj.requestN}</reqn>
+        <wmid>{obj.wmid}</wmid>
+        <sign>{obj.signature}</sign>
+        {operations(obj.operations)}
       </w3s.request>
     }
 
