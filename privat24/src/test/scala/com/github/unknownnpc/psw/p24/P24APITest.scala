@@ -2,7 +2,6 @@ package com.github.unknownnpc.psw.p24
 
 import java.util.Date
 
-import com.github.unknownnpc.psw.p24.model.P24Model.P24Credential
 import org.apache.http.client.methods.{CloseableHttpResponse, HttpPost}
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.CloseableHttpClient
@@ -17,8 +16,7 @@ import org.scalatestplus.mockito.MockitoSugar
 class P24APITest extends FunSpec with Matchers with MockitoSugar {
 
   private val client: CloseableHttpClient = mock[CloseableHttpClient]
-  private val credential = P24Credential(1, "pass")
-  private val p24API = P24API(credential, client)
+  private val p24API = P24API(1, "pass", client)
 
   describe("retrieveTransferHistory") {
 

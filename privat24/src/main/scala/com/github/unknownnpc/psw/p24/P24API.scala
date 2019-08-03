@@ -5,12 +5,12 @@ import java.util.Date
 
 import com.github.unknownnpc.psw.api.APIException
 import com.github.unknownnpc.psw.p24.action.RetrieveTransferHistoryAction
+import com.github.unknownnpc.psw.p24.model.P24Model.Merchant
 import com.github.unknownnpc.psw.p24.model.P24Model.WalletHistory._
-import com.github.unknownnpc.psw.p24.model.P24Model.{Merchant, P24Credential}
 import com.github.unknownnpc.psw.p24.serializer.P24Serializer.walletHistoryReqResSerializer
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 
-private[p24] class P24API(credentials: P24Credential, httpClient: CloseableHttpClient) {
+private[p24] class P24API(merchId: Long, merchPass: String, httpClient: CloseableHttpClient) {
 
   private val p24ReqDateFormatter = new SimpleDateFormat(WalletRequestHistoryDateFormat)
 
@@ -26,8 +26,8 @@ private[p24] class P24API(credentials: P24Credential, httpClient: CloseableHttpC
   def retrieveTransferHistory(cardNum: String, from: Date, to: Date, waitVal: Long = 15): Either[APIException, WalletHistoryResponse] = {
 
     val request = WalletHistoryRequest(
-      credentials.pass,
-      Merchant(credentials.id, None),
+      merchPass,
+      Merchant(merchId, None),
       WalletHistoryRequestData(
         waitField = waitVal,
         payment =
@@ -48,9 +48,9 @@ private[p24] class P24API(credentials: P24Credential, httpClient: CloseableHttpC
 
 object P24API {
 
-  def apply(credentials: P24Credential,
-            httpClient: CloseableHttpClient = HttpClients.createDefault()): P24API = new P24API(credentials, httpClient)
+  def apply(merchId: Long, merchPass: String,
+            httpClient: CloseableHttpClient = HttpClients.createDefault()): P24API = new P24API(merchId, merchPass, httpClient)
 
-  def getInstance(credentials: P24Credential) = apply(credentials)
+  def getInstance(merchId: Long, merchPass: String) = apply(merchId, merchPass)
 
 }

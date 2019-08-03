@@ -4,7 +4,6 @@ import java.util.Date
 
 private[p24] object P24Model {
 
-  case class P24Credential(id: Long, pass: String)
   case class Merchant(id: Long, signature: Option[String])
 
   object WalletHistory {

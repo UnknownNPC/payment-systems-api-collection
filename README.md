@@ -45,7 +45,7 @@ sbt clean compile
 ```
 #### Usage in java code
 ```
-P24API p24Api = P24API.getInstance(new P24Model.P24Credential(1, "merch_id"));
+P24API p24Api = P24API.getInstance(1, "merchPass"));
 QiwiAPI qiwiApi = QiwiAPI.getInstance("token");
 // Requires KWM backup key(!)
 WebMoneyAPI webMoneyApi = WebMoneyAPI.getInstance("wimd", "password", "/kwmPath/test.kwm");        
