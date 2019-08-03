@@ -5,6 +5,7 @@ import java.util.Date
 
 import com.github.unknownnpc.psw.api.APIException
 import com.github.unknownnpc.psw.p24.action.RetrieveTransferHistoryAction
+import com.github.unknownnpc.psw.p24.model.P24Model
 import com.github.unknownnpc.psw.p24.model.P24Model.Merchant
 import com.github.unknownnpc.psw.p24.model.P24Model.WalletHistory._
 import com.github.unknownnpc.psw.p24.serializer.P24Serializer.walletHistoryReqResSerializer
@@ -25,17 +26,17 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
     */
   def retrieveTransferHistory(cardNum: String, from: Date, to: Date, waitVal: Long = 15): Either[APIException, WalletHistoryResponse] = {
 
-    val request = WalletHistoryRequest(
+    val request = P24Model.Request(
       merchPass,
       Merchant(merchId, None),
-      WalletHistoryRequestData(
+      P24Model.RequestData(
         waitField = waitVal,
         payment =
-          WalletHistoryRequestDataPayment(
+          P24Model.RequestDataPayment(
             props = List(
-              WalletHistoryRequestDataProp(WalletRequestHistoryFromDate, p24ReqDateFormatter.format(from)),
-              WalletHistoryRequestDataProp(WalletRequestHistoryToDate, p24ReqDateFormatter.format(to)),
-              WalletHistoryRequestDataProp(WalletRequestHistoryCardName, cardNum)
+              P24Model.RequestDataProp(WalletRequestHistoryFromDate, p24ReqDateFormatter.format(from)),
+              P24Model.RequestDataProp(WalletRequestHistoryToDate, p24ReqDateFormatter.format(to)),
+              P24Model.RequestDataProp(WalletRequestHistoryCardName, cardNum)
             )
           )
       )
@@ -43,6 +44,8 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
 
     RetrieveTransferHistoryAction(httpClient).run(request)
   }
+
+  def retrieveCardBalance(cardNum: String, waitVal: Long = 15)
 
 }
 

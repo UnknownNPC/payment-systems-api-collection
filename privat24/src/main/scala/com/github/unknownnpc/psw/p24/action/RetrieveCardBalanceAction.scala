@@ -7,12 +7,12 @@ import com.github.unknownnpc.psw.p24.model.P24Model.WalletHistory.WalletHistoryR
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.CloseableHttpClient
 
-private[action] trait RetrieveTransferHistoryAction extends
+private[action] trait RetrieveCardBalanceAction extends
   ActionContext[P24Model.Request, WalletHistoryResponse, HttpPost, String] with RestHttpExecutor[HttpPost]
 
-object RetrieveTransferHistoryAction {
+object RetrieveCardBalanceAction {
 
-  def apply(httpClientParam: CloseableHttpClient): RetrieveTransferHistoryAction = new RetrieveTransferHistoryAction() {
+  def apply(httpClientParam: CloseableHttpClient): RetrieveCardBalanceAction = new RetrieveCardBalanceAction() {
     override val httpClient: CloseableHttpClient = httpClientParam
   }
 
