@@ -27,19 +27,19 @@ sbt clean compile
     <dependency>
         <groupId>com.github.unknownnpc.psw</groupId>
         <artifactId>qiwi_2.12</artifactId>
-        <version>0.0.1</version>
+        <version>X.X.X</version>
     </dependency>
     <!-- WebMoney API -->
     <dependency>
         <groupId>com.github.unknownnpc.psw</groupId>
         <artifactId>webmoney_2.12</artifactId>
-        <version>0.0.1</version>
+        <version>X.X.X</version>
     </dependency>
     <!-- Privat24 API -->
     <dependency>
         <groupId>com.github.unknownnpc.psw</groupId>
         <artifactId>privat24_2.12</artifactId>
-        <version>0.0.1</version>
+        <version>X.X.X</version>
     </dependency>
 </dependencies>
 ```
