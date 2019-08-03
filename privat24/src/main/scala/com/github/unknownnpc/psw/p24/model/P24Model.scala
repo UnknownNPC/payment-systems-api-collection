@@ -4,7 +4,7 @@ import java.util.Date
 
 private[p24] object P24Model {
 
-  case class Merchant(id: Long, signature: Option[String])
+  case class Merchant(id: Long, signature: Option[String] = None)
 
   case class Request(merchantPassword: String, merchant: Merchant, data: RequestData)
   case class RequestData(oper: String = "cmt", waitField: Long = 0, test: Long = 0, payment: RequestDataPayment)
@@ -20,5 +20,15 @@ private[p24] object P24Model {
 
   }
 
+  object CardBalance {
+
+    case class Response(merchant: Merchant, data: ResponseData)
+    case class ResponseData(oper: String, cardBalance: ResponseCardBalance, card: ResponseCard)
+    case class ResponseCardBalance(avBalance: BigDecimal, balDate: Date, balDyn: String,
+                                   balance: BigDecimal, finLimit: BigDecimal, tradeLimit: BigDecimal)
+    case class ResponseCard(account: String, cardNumber: String, accName: String, accType: String,
+                            currency: String, cardType: String, mainCardNumber: String,
+                            cardStat: String, src: String)
+  }
 
 }

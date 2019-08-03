@@ -6,5 +6,8 @@ package object p24 {
   val WalletRequestHistoryToDate = "ed"
   val WalletRequestHistoryCardName = "card"
   val WalletRequestHistoryDateFormat = "dd.MM.yyyy"
+  val CardBalanceCardnum = "cardnum"
+  val CardBalanceCountryKey = "country"
+  val CardBalanceCountryVal = "UA"
 
 }

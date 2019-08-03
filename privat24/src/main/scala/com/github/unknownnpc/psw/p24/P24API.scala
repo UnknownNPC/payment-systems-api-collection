@@ -4,11 +4,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import com.github.unknownnpc.psw.api.APIException
-import com.github.unknownnpc.psw.p24.action.RetrieveTransferHistoryAction
+import com.github.unknownnpc.psw.p24.action.{RetrieveCardBalanceAction, RetrieveTransferHistoryAction}
 import com.github.unknownnpc.psw.p24.model.P24Model
-import com.github.unknownnpc.psw.p24.model.P24Model.Merchant
 import com.github.unknownnpc.psw.p24.model.P24Model.WalletHistory._
-import com.github.unknownnpc.psw.p24.serializer.P24Serializer.walletHistoryReqResSerializer
+import com.github.unknownnpc.psw.p24.model.P24Model.{CardBalance, Merchant}
+import com.github.unknownnpc.psw.p24.serializer.P24Serializer._
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 
 private[p24] class P24API(merchId: Long, merchPass: String, httpClient: CloseableHttpClient) {
@@ -22,13 +22,14 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
     * @param cardNum the target card num
     * @param from    the from date
     * @param to      the to date
+    * @param waitVal the request await timeout
     * @return the response payload or error
     */
   def retrieveTransferHistory(cardNum: String, from: Date, to: Date, waitVal: Long = 15): Either[APIException, WalletHistoryResponse] = {
 
     val request = P24Model.Request(
       merchPass,
-      Merchant(merchId, None),
+      Merchant(merchId),
       P24Model.RequestData(
         waitField = waitVal,
         payment =
@@ -45,7 +46,32 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
     RetrieveTransferHistoryAction(httpClient).run(request)
   }
 
-  def retrieveCardBalance(cardNum: String, waitVal: Long = 15)
+  /**
+    * Retrieves card balance
+    * https://api.privatbank.ua/#p24/balance
+    *
+    * @param cardNum the target card num
+    * @param waitVal the request await timeout
+    * @return the response payload or error
+    */
+  def retrieveCardBalance(cardNum: String, waitVal: Long = 15): Either[APIException, CardBalance.Response] = {
+    val request = P24Model.Request(
+      merchPass,
+      Merchant(merchId),
+      P24Model.RequestData(
+        waitField = waitVal,
+        payment =
+          P24Model.RequestDataPayment(
+            props = List(
+              P24Model.RequestDataProp(CardBalanceCardnum, cardNum),
+              P24Model.RequestDataProp(CardBalanceCountryKey, CardBalanceCountryVal)
+            )
+          )
+      )
+    )
+
+    RetrieveCardBalanceAction(httpClient).run(request)
+  }
 
 }
 

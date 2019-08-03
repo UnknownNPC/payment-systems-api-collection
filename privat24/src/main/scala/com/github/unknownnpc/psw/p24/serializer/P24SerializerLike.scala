@@ -12,6 +12,7 @@ import scala.xml.{Elem, Node}
 trait P24SerializerLike {
 
   val p24ResponseDateFormatter = new SimpleDateFormat("yyyy-MM-dd")
+  val p24ResponseDateTimeFormatter = new SimpleDateFormat("dd.MM.yy HH:mm")
 
   def unPrettyOut(string: String): String = {
     string.replaceAll(">\\s+<", "><")
