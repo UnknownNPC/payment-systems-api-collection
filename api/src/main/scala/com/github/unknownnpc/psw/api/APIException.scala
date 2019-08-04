@@ -7,5 +7,5 @@ class InvalidParam(message: String = "Invalid external param", cause: Throwable)
   extends APIException(message, cause)
 
 final case
-class ExternalAPIException(message: String = "External request fail", cause: Throwable)
+class ExternalAPIException(message: String = "External request error", cause: Throwable)
   extends APIException(message, cause)

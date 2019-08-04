@@ -27,7 +27,7 @@ private[qiwi] object QiwiModel {
       val WAITING, SUCCESS, ERROR = Value
     }
 
-    case class Request(apiToken: String, wallet: String, rows: Int = 10,
+    case class Request(apiToken: String, personId: String, rows: Int = 10,
                        operation: Option[ReqTransferType.Value] = Some(ReqTransferType.ALL),
                        sources: List[ReqSources.Value] = List.empty, startEndDates: Option[StartEndDates] = None,
                        nextPage: Option[NextPage] = None)
@@ -41,6 +41,19 @@ private[qiwi] object QiwiModel {
     case class ResponseAmountCurrency(amount: BigDecimal, currency: String)
     case class ResponseProvider(id: Long, shortName: String, longName: String, logoUrl: String, description: String,
                                 keys: String, siteUrl: String)
+
+  }
+
+  object AccountBalance {
+
+    case class Request(apiToken: String, wallet: String)
+
+    case class Response(accounts: List[ResponseAccount])
+    case class ResponseAccount(alias: String, fsAlias: String, bankAlias: String,
+                               title: String, `type`: ResponseAccountType, hasBalance: Boolean, balance: ResponseAccountBalance,
+                               currency: Int, defaultAccount: Boolean)
+    case class ResponseAccountType(id: String, title: String)
+    case class ResponseAccountBalance(amount: BigDecimal, currency: Int)
 
   }
 

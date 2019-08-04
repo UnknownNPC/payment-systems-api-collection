@@ -11,7 +11,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     val fromDate = new Date(10000)
     val toDate = new Date(20000)
     val request = Request(
-      "token", "wallet", 11, Some(ReqTransferType.IN), sources = List(ReqSources.QW_EUR, ReqSources.CARD),
+      "token", "personId", 11, Some(ReqTransferType.IN), sources = List(ReqSources.QW_EUR, ReqSources.CARD),
       Some(fromDate, toDate), Some(toDate, 2L)
     )
 
@@ -19,7 +19,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
-    requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/wallet/payments?rows=11&" +
+    requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/personId/payments?rows=11&" +
       "operation=IN&sources=2&sources=3&startDate=1970-01-01T00:00:10Z&endDate=1970-01-01T00:00:20Z&nextTxnDate=1970-01-01T00:00:20Z&nextTxnId=2"
   }
 

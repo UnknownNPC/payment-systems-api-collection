@@ -43,7 +43,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Reque
     } yield List(operation) ++ sources ++ startEndDates ++ nextPage
 
     val paramsStr = paramsList.map(_.mkString("&")).getOrElse("")
-    val fullRequestUrl = String.format(urlTarget, req.wallet, req.rows.toString) + paramsStr
+    val fullRequestUrl = String.format(urlTarget, req.personId, req.rows.toString) + paramsStr
     val httpGet = new HttpGet(fullRequestUrl)
     httpGet.setHeader("Authorization", "Bearer " + req.apiToken)
     httpGet.setHeader("Accept", "application/json")

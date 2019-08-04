@@ -15,15 +15,13 @@ class UtilsTest extends FunSpec with Matchers {
   }
 
   it("wmReqnGen values") {
-    (0 to 100).forall(_ => {
-      val a = Utils.wmReqnGen
-      val b = Utils.wmReqnGen
-      a < b
+    (0 to 10000).forall(_ => {
+      Utils.wmReqnGen <  Utils.wmReqnGen
     }) shouldBe true
   }
 
   it("wmReqnGen sizes") {
-    (0 to 100).forall(_ => {
+    (0 to 10000).forall(_ => {
       Utils.wmReqnGen.toString.length == 15
     }) shouldBe true
   }

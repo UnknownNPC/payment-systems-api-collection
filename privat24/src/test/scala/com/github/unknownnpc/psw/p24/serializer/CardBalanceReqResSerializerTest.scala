@@ -72,9 +72,24 @@ class CardBalanceReqResSerializerTest extends FunSpec with Matchers {
     val result = P24Serializer.cardBalanceReqResSerializer.fromRes(responseSample)
 
     result should not be null
-    result.toString shouldBe "Response(Merchant(75482,Some(bff932d0e97877619965283ed0d147c87a78b6c1))," +
-      "ResponseData(cmt,ResponseCardBalance(0.95,Wed Sep 11 15:56:00 CEST 2013,E,0.95,0.00,0.00)," +
-      "ResponseCard(5168742060221193,5168742060221193,Карта для Выплат Gold,CC,UAH,Карта для Выплат Gold,5168742060221193,NORM,M)))"
+    result.merchant.id shouldBe 75482
+    result.merchant.signature shouldBe Some("bff932d0e97877619965283ed0d147c87a78b6c1")
+    result.data.oper shouldBe "cmt"
+    result.data.cardBalance.finLimit shouldBe BigDecimal(0.00)
+    result.data.cardBalance.balDyn shouldBe "E"
+    result.data.cardBalance.balDate should not be null
+    result.data.cardBalance.balance shouldBe BigDecimal(0.95)
+    result.data.cardBalance.avBalance shouldBe BigDecimal(0.95)
+    result.data.cardBalance.tradeLimit shouldBe BigDecimal(0.00)
+    result.data.card.mainCardNumber shouldBe "5168742060221193"
+    result.data.card.currency shouldBe "UAH"
+    result.data.card.cardStat shouldBe "NORM"
+    result.data.card.cardNumber shouldBe "5168742060221193"
+    result.data.card.account shouldBe "5168742060221193"
+    result.data.card.accType shouldBe "CC"
+    result.data.card.cardType shouldBe "Карта для Выплат Gold"
+    result.data.card.accName shouldBe "Карта для Выплат Gold"
+    result.data.card.src shouldBe "M"
   }
 
 }
