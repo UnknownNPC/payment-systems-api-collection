@@ -3,8 +3,8 @@ package com.github.unknownnpc.psw.wm.serializer
 import java.util.Date
 
 import com.github.unknownnpc.psw.wm.Utils.WMDateFormatter
-import com.github.unknownnpc.psw.wm.model.Model.X3
-import com.github.unknownnpc.psw.wm.model.Model.X3.{RequestOperation, ResponseOperationType, RetVal}
+import com.github.unknownnpc.psw.wm.model.Model.{RetVal, X3}
+import com.github.unknownnpc.psw.wm.model.Model.X3.{RequestOperation, ResponseOperationType}
 import org.apache.http.util.EntityUtils
 import org.scalatest.{FunSpec, Matchers}
 

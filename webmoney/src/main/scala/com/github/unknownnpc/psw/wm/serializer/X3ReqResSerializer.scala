@@ -1,24 +1,17 @@
 package com.github.unknownnpc.psw.wm.serializer
 
 import com.github.unknownnpc.psw.api.Serializer
-import com.github.unknownnpc.psw.wm.model.Model.X3
 import com.github.unknownnpc.psw.wm.model.Model.X3._
+import com.github.unknownnpc.psw.wm.model.Model.{RetVal, X3}
 import org.apache.http.client.methods.HttpPost
-import org.apache.http.entity.{ContentType, StringEntity}
 
 import scala.xml.{Elem, XML}
 
-private[serializer] class X3ReqResSerializer extends Serializer[X3.Request, X3.Response, HttpPost, String] {
+private[serializer] class X3ReqResSerializer extends Serializer[X3.Request, X3.Response, HttpPost, String] with ReqResSerializerLike  {
 
   private val urlTarget: String = "https://w3s.webmoney.ru/asp/XMLOperations.asp"
 
   override def toReq(obj: X3.Request): HttpPost = {
-
-    def formPostReq(payload: String): HttpPost = {
-      val httpPost = new HttpPost(urlTarget)
-      httpPost.setEntity(new StringEntity(payload, ContentType.APPLICATION_XML))
-      httpPost
-    }
 
     def operation(op: X3.RequestOperation): Elem = {
       scala.xml.XML.loadString(s"<${op.name}>${op.value}</${op.name}>")
@@ -39,7 +32,7 @@ private[serializer] class X3ReqResSerializer extends Serializer[X3.Request, X3.R
       </w3s.request>
     }
 
-    formPostReq(xmlReq(obj).toString())
+    formPostReq(xmlReq(obj).toString(), urlTarget)
   }
 
   override def fromRes(out: String): X3.Response = {
