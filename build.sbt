@@ -18,6 +18,7 @@ lazy val api = project
   .settings(
     name := "api",
     settings,
+    mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.httpClient
     )
