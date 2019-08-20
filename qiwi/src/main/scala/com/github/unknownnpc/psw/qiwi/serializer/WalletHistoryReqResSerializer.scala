@@ -4,12 +4,12 @@ import java.text.SimpleDateFormat
 import java.util.{Date, TimeZone}
 
 import com.github.unknownnpc.psw.api.Serializer
-import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory.{Request, ResStatus, Response}
+import com.github.unknownnpc.psw.qiwi.model.{ResStatus, WalletHistoryRequest, WalletHistoryResponse}
 import org.apache.http.client.methods.HttpGet
 import org.json4s.CustomSerializer
 import org.json4s.JsonAST.JString
 
-private[serializer] class WalletHistoryReqResSerializer extends Serializer[Request, Response, HttpGet, String] {
+private[serializer] class WalletHistoryReqResSerializer extends Serializer[WalletHistoryRequest, WalletHistoryResponse, HttpGet, String] {
 
   private val urlTarget: String = "https://edge.qiwi.com/payment-history/v2/persons/%s/payments?rows=%s&"
 
@@ -24,7 +24,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Reque
     setTimeZone(TimeZone.getTimeZone("GMT"))
   }
 
-  override def toReq(req: Request): HttpGet = {
+  override def toReq(req: WalletHistoryRequest): HttpGet = {
 
     def queryParam(name: String, value: String): String = s"$name=$value"
 
@@ -51,13 +51,13 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Reque
     httpGet
   }
 
-  override def fromRes(out: String): Response = {
+  override def fromRes(out: String): WalletHistoryResponse = {
     import org.json4s._
     import org.json4s.native.Serialization
     import org.json4s.native.Serialization.read
     implicit val formats = Serialization.formats(NoTypeHints) + CustomDateSerializer + ResStatusSerializer
 
-    read[Response](out)
+    read[WalletHistoryResponse](out)
   }
 
   object CustomDateSerializer extends CustomSerializer[Date](_ => ( {

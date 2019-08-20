@@ -2,12 +2,12 @@ package com.github.unknownnpc.psw.qiwi.action
 
 import com.github.unknownnpc.psw.api.action.ActionContext
 import com.github.unknownnpc.psw.api.executor.RestHttpExecutor
-import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory.{Request, Response}
+import com.github.unknownnpc.psw.qiwi.model.{WalletHistoryRequest, WalletHistoryResponse}
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.CloseableHttpClient
 
 private[qiwi] trait RetrieveTransferHistoryAction extends
-  ActionContext[Request, Response, HttpGet, String] with RestHttpExecutor[HttpGet]
+  ActionContext[WalletHistoryRequest, WalletHistoryResponse, HttpGet, String] with RestHttpExecutor[HttpGet]
 
 object RetrieveTransferHistoryAction {
 

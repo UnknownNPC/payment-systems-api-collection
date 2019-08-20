@@ -1,12 +1,12 @@
 package com.github.unknownnpc.psw.qiwi.serializer
 
-import com.github.unknownnpc.psw.qiwi.model.QiwiModel.AccountBalance.Request
+import com.github.unknownnpc.psw.qiwi.model.AccountBalanceRequest
 import org.scalatest.{FunSpec, Matchers}
 
 class AccountBalanceReqResSerializerTest extends FunSpec with Matchers {
 
   it("should serialize to request correctly when all params exist") {
-    val request = Request("token", "personId")
+    val request = AccountBalanceRequest("token", "personId")
     val requestSample = QiwiSerializer.accountBalanceReqResSerializer.toReq(request)
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
@@ -15,7 +15,7 @@ class AccountBalanceReqResSerializerTest extends FunSpec with Matchers {
 
   it("should serialize to request with valid headers") {
     val token = "token123"
-    val request = Request(token, "wallet")
+    val request = AccountBalanceRequest(token, "wallet")
     val requestSample = QiwiSerializer.accountBalanceReqResSerializer.toReq(request)
     requestSample.getAllHeaders.head.getName shouldBe "Authorization"
     requestSample.getAllHeaders.head.getValue shouldBe s"Bearer $token"

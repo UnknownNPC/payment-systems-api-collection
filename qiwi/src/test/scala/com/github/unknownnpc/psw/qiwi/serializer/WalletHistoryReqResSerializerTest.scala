@@ -2,7 +2,7 @@ package com.github.unknownnpc.psw.qiwi.serializer
 
 import java.util.Date
 
-import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory.{ReqSources, ReqTransferType, Request, ResStatus}
+import com.github.unknownnpc.psw.qiwi.model.{ReqSources, ReqTransferType, ResStatus, WalletHistoryRequest}
 import org.scalatest.{FunSpec, Matchers}
 
 class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
@@ -10,7 +10,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
   it("should serialize to request correctly when all params exist") {
     val fromDate = new Date(10000)
     val toDate = new Date(20000)
-    val request = Request(
+    val request = WalletHistoryRequest(
       "token", "personId", 11, Some(ReqTransferType.IN), sources = List(ReqSources.QW_EUR, ReqSources.CARD),
       Some(fromDate, toDate), Some(toDate, 2L)
     )
@@ -24,7 +24,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
   }
 
   it("should serialize to request correctly when all params default") {
-    val request = Request("token", "wallet", 11)
+    val request = WalletHistoryRequest("token", "wallet", 11)
     val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
@@ -33,7 +33,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
   it("should serialize to request with valid headers") {
     val token = "token123"
-    val request = Request(token, "wallet", 11)
+    val request = WalletHistoryRequest(token, "wallet", 11)
     val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
     requestSample.getAllHeaders.head.getName shouldBe "Authorization"
     requestSample.getAllHeaders.head.getValue shouldBe s"Bearer $token"

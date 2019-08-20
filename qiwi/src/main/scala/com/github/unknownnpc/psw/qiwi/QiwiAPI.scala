@@ -4,8 +4,7 @@ import java.util.Optional
 
 import com.github.unknownnpc.psw.api.APIException
 import com.github.unknownnpc.psw.qiwi.action.{RetrieveAccountBalanceAction, RetrieveTransferHistoryAction}
-import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory.{NextPage, ReqSources, ReqTransferType, StartEndDates}
-import com.github.unknownnpc.psw.qiwi.model.QiwiModel.{AccountBalance, WalletHistory}
+import com.github.unknownnpc.psw.qiwi.model._
 import com.github.unknownnpc.psw.qiwi.serializer.QiwiSerializer._
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 
@@ -27,18 +26,18 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
     */
   def retrieveTransferHistory(personId: String, rows: Int = 10,
                               operation: Option[ReqTransferType.Value] = Some(ReqTransferType.ALL),
-                              sources: List[ReqSources.Value] = List.empty, startEndDates: Option[StartEndDates] = None,
-                              nextPage: Option[NextPage] = None): Either[APIException, WalletHistory.Response] = {
+                              sources: List[ReqSources.Value] = List.empty, startEndDates: Option[WalletHistory#StartEndDates] = None,
+                              nextPage: Option[WalletHistory#NextPage] = None): Either[APIException, WalletHistoryResponse] = {
     RetrieveTransferHistoryAction(httpClient).run(
-      WalletHistory.Request(token, personId, rows, operation, sources, startEndDates, nextPage)
+      WalletHistoryRequest(token, personId, rows, operation, sources, startEndDates, nextPage)
     )
   }
 
   def retrieveTransferHistoryJava(personId: String, rows: Optional[Integer],
                                   operation: Optional[ReqTransferType.Value],
                                   sources: java.util.List[ReqSources.Value],
-                                  startEndDates: Optional[StartEndDates],
-                                  nextPage: Optional[NextPage]): Either[APIException, WalletHistory.Response] = {
+                                  startEndDates: Optional[WalletHistory#StartEndDates],
+                                  nextPage: Optional[WalletHistory#NextPage]): Either[APIException, WalletHistoryResponse] = {
     retrieveTransferHistory(personId,
       rows.orElse(10),
       Option(operation.orElse(ReqTransferType.ALL)),
@@ -55,15 +54,15 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
     * @param personId the personId valie, eg: 30501234567
     * @return the entity with response or error
     */
-  def retrieveAccountBalance(personId: String): Either[APIException, AccountBalance.Response] = {
+  def retrieveAccountBalance(personId: String): Either[APIException, AccountBalanceResponse] = {
     RetrieveAccountBalanceAction(httpClient).run(
-      AccountBalance.Request(token, personId)
+      AccountBalanceRequest(token, personId)
     )
   }
 
-  def retrieveAccountBalanceJava(personId: String): Either[APIException, AccountBalance.Response] = {
+  def retrieveAccountBalanceJava(personId: String): Either[APIException, AccountBalanceResponse] = {
     RetrieveAccountBalanceAction(httpClient).run(
-      AccountBalance.Request(token, personId)
+      AccountBalanceRequest(token, personId)
     )
   }
 

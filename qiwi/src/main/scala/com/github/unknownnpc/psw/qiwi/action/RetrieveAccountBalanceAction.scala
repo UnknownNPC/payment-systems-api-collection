@@ -2,12 +2,12 @@ package com.github.unknownnpc.psw.qiwi.action
 
 import com.github.unknownnpc.psw.api.action.ActionContext
 import com.github.unknownnpc.psw.api.executor.RestHttpExecutor
-import com.github.unknownnpc.psw.qiwi.model.QiwiModel.AccountBalance.{Request, Response}
+import com.github.unknownnpc.psw.qiwi.model.{AccountBalanceRequest, AccountBalanceResponse}
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.CloseableHttpClient
 
 private[qiwi] trait RetrieveAccountBalanceAction extends
-  ActionContext[Request, Response, HttpGet, String] with RestHttpExecutor[HttpGet]
+  ActionContext[AccountBalanceRequest, AccountBalanceResponse, HttpGet, String] with RestHttpExecutor[HttpGet]
 
 object RetrieveAccountBalanceAction {
 
