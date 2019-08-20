@@ -1,12 +1,12 @@
 package com.github.unknownnpc.psw.wm.serializer
 
 import com.github.unknownnpc.psw.api.Serializer
-import com.github.unknownnpc.psw.wm.model.Model.{X3, X9}
+import com.github.unknownnpc.psw.wm.model.{X3Request, X3Response, X9Request, X9Response}
 import org.apache.http.client.methods.HttpPost
 
 private[wm] object WebMoneySerializer {
 
-  implicit val x3ReqResSerializer: Serializer[X3.Request, X3.Response, HttpPost, String] = new X3ReqResSerializer
-  implicit val x9ReqResSerializer: Serializer[X9.Request, X9.Response, HttpPost, String] = new X9ReqResSerializer
+  implicit val x3ReqResSerializer: Serializer[X3Request, X3Response, HttpPost, String] = new X3ReqResSerializer
+  implicit val x9ReqResSerializer: Serializer[X9Request, X9Response, HttpPost, String] = new X9ReqResSerializer
 
 }

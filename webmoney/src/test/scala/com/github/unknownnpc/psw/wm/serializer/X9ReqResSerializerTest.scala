@@ -2,7 +2,7 @@ package com.github.unknownnpc.psw.wm.serializer
 
 import java.util.Date
 
-import com.github.unknownnpc.psw.wm.model.Model.{RetVal, X9}
+import com.github.unknownnpc.psw.wm.model.{RetVal, X9Request}
 import org.apache.http.util.EntityUtils
 import org.scalatest.{FunSpec, Matchers}
 
@@ -10,7 +10,7 @@ class X9ReqResSerializerTest extends FunSpec with Matchers {
 
   it("serialize to request") {
     val testDate = new Date(0)
-    val request = X9.Request("wmid", "sign", "reqN")
+    val request = X9Request("wmid", "sign", "reqN")
     val requestSample = WebMoneySerializer.x9ReqResSerializer.toReq(request)
     requestSample should not be null
     requestSample.getAllHeaders.toList shouldBe List()

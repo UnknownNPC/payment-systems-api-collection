@@ -2,12 +2,12 @@ package com.github.unknownnpc.psw.wm.action
 
 import com.github.unknownnpc.psw.api.action.ActionContext
 import com.github.unknownnpc.psw.api.executor.RestHttpExecutor
-import com.github.unknownnpc.psw.wm.model.Model.X3
+import com.github.unknownnpc.psw.wm.model.{X3Request, X3Response}
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.CloseableHttpClient
 
 private[action] trait X3Action extends
-  ActionContext[X3.Request, X3.Response, HttpPost, String] with RestHttpExecutor[HttpPost]
+  ActionContext[X3Request, X3Response, HttpPost, String] with RestHttpExecutor[HttpPost]
 
 object X3Action {
 

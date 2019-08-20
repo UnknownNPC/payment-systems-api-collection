@@ -3,8 +3,7 @@ package com.github.unknownnpc.psw.wm.serializer
 import java.util.Date
 
 import com.github.unknownnpc.psw.wm.Utils.WMDateFormatter
-import com.github.unknownnpc.psw.wm.model.Model.{RetVal, X3}
-import com.github.unknownnpc.psw.wm.model.Model.X3.{RequestOperation, ResponseOperationType}
+import com.github.unknownnpc.psw.wm.model.{RetVal, X3Request, X3RequestOperation, X3ResponseOperationType}
 import org.apache.http.util.EntityUtils
 import org.scalatest.{FunSpec, Matchers}
 
@@ -12,14 +11,14 @@ class X3ReqResSerializerTest extends FunSpec with Matchers {
 
   it("serialize to request") {
     val testDate = new Date(0)
-    val request = X3.Request("wmid", "sign", "reqN", List(
-      RequestOperation("purse", "walletId"),
-      RequestOperation("datestart", WMDateFormatter.format(testDate)),
-      RequestOperation("datefinish", WMDateFormatter.format(testDate)),
-      RequestOperation("wmtranid", "wmtranid"),
-      RequestOperation("tranid", "tranid"),
-      RequestOperation("wminvid", "wminvid"),
-      RequestOperation("orderid", "orderid")
+    val request = X3Request("wmid", "sign", "reqN", List(
+      X3RequestOperation("purse", "walletId"),
+      X3RequestOperation("datestart", WMDateFormatter.format(testDate)),
+      X3RequestOperation("datefinish", WMDateFormatter.format(testDate)),
+      X3RequestOperation("wmtranid", "wmtranid"),
+      X3RequestOperation("tranid", "tranid"),
+      X3RequestOperation("wminvid", "wminvid"),
+      X3RequestOperation("orderid", "orderid")
     ))
     val requestSample = WebMoneySerializer.x3ReqResSerializer.toReq(request)
     requestSample should not be null
@@ -73,20 +72,20 @@ class X3ReqResSerializerTest extends FunSpec with Matchers {
     result.operations.details.head.ts shouldBe "n2"
     result.operations.details.head.isTimeLock shouldBe true
     result.operations.details.head.props should have size 14
-    result.operations.details.head.props(ResponseOperationType.pursesrc) shouldBe "1"
-    result.operations.details.head.props(ResponseOperationType.pursedest) shouldBe "2"
-    result.operations.details.head.props(ResponseOperationType.amount) shouldBe "3"
-    result.operations.details.head.props(ResponseOperationType.comiss) shouldBe "4"
-    result.operations.details.head.props(ResponseOperationType.opertype) shouldBe "5"
-    result.operations.details.head.props(ResponseOperationType.wminvid) shouldBe "6"
-    result.operations.details.head.props(ResponseOperationType.orderid) shouldBe "7"
-    result.operations.details.head.props(ResponseOperationType.tranid) shouldBe "8"
-    result.operations.details.head.props(ResponseOperationType.period) shouldBe "9"
-    result.operations.details.head.props(ResponseOperationType.desc) shouldBe "10"
-    result.operations.details.head.props(ResponseOperationType.datecrt) shouldBe "11"
-    result.operations.details.head.props(ResponseOperationType.dateupd) shouldBe "12"
-    result.operations.details.head.props(ResponseOperationType.corrwm) shouldBe "13"
-    result.operations.details.head.props(ResponseOperationType.rest) shouldBe "14"
+    result.operations.details.head.props(X3ResponseOperationType.pursesrc) shouldBe "1"
+    result.operations.details.head.props(X3ResponseOperationType.pursedest) shouldBe "2"
+    result.operations.details.head.props(X3ResponseOperationType.amount) shouldBe "3"
+    result.operations.details.head.props(X3ResponseOperationType.comiss) shouldBe "4"
+    result.operations.details.head.props(X3ResponseOperationType.opertype) shouldBe "5"
+    result.operations.details.head.props(X3ResponseOperationType.wminvid) shouldBe "6"
+    result.operations.details.head.props(X3ResponseOperationType.orderid) shouldBe "7"
+    result.operations.details.head.props(X3ResponseOperationType.tranid) shouldBe "8"
+    result.operations.details.head.props(X3ResponseOperationType.period) shouldBe "9"
+    result.operations.details.head.props(X3ResponseOperationType.desc) shouldBe "10"
+    result.operations.details.head.props(X3ResponseOperationType.datecrt) shouldBe "11"
+    result.operations.details.head.props(X3ResponseOperationType.dateupd) shouldBe "12"
+    result.operations.details.head.props(X3ResponseOperationType.corrwm) shouldBe "13"
+    result.operations.details.head.props(X3ResponseOperationType.rest) shouldBe "14"
   }
 
 }

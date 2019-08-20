@@ -5,8 +5,7 @@ import java.util.{Date, Optional}
 import com.github.unknownnpc.psw.api.{APIException, InvalidParam}
 import com.github.unknownnpc.psw.wm.action.{X3Action, X9Action}
 import com.github.unknownnpc.psw.wm.client.InsecureHttpClient
-import com.github.unknownnpc.psw.wm.model.Model.X3.RequestOperation
-import com.github.unknownnpc.psw.wm.model.Model.{X3, X9}
+import com.github.unknownnpc.psw.wm.model._
 import com.github.unknownnpc.psw.wm.serializer.WebMoneySerializer._
 import com.github.unknownnpc.psw.wm.signer.WmSigner
 import org.apache.http.impl.client.CloseableHttpClient
@@ -27,23 +26,23 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
     * @return the payload or error
     */
   def runX3Command(wmid: String, dateStart: Date, dateFinish: Date, wmtranidOpt: Option[Long] = None,
-                   tranidOpt: Option[Long] = None, wminvidOpt: Option[Long] = None, orderidOpt: Option[Long] = None): Either[APIException, X3.Response] = {
+                   tranidOpt: Option[Long] = None, wminvidOpt: Option[Long] = None, orderidOpt: Option[Long] = None): Either[APIException, X3Response] = {
     val requestN = Utils.wmReqnGen.toString
     signer.sign(wmid + requestN) match {
       case Left(e) =>
         Left(InvalidParam(cause = e))
       case Right(signature) =>
         val operationOpts = List(
-          Some(RequestOperation("purse", wmid)),
-          Some(RequestOperation("datestart", Utils.WMDateFormatter.format(dateStart))),
-          Some(RequestOperation("datefinish", Utils.WMDateFormatter.format(dateFinish))),
-          wmtranidOpt.map(wmtranid => RequestOperation("wmtranid", wmtranid.toString)),
-          tranidOpt.map(tranid => RequestOperation("tranid", tranid.toString)),
-          wminvidOpt.map(wminvid => RequestOperation("wminvid", wminvid.toString)),
-          orderidOpt.map(orderid => RequestOperation("orderid", orderid.toString))
+          Some(X3RequestOperation("purse", wmid)),
+          Some(X3RequestOperation("datestart", Utils.WMDateFormatter.format(dateStart))),
+          Some(X3RequestOperation("datefinish", Utils.WMDateFormatter.format(dateFinish))),
+          wmtranidOpt.map(wmtranid => X3RequestOperation("wmtranid", wmtranid.toString)),
+          tranidOpt.map(tranid => X3RequestOperation("tranid", tranid.toString)),
+          wminvidOpt.map(wminvid => X3RequestOperation("wminvid", wminvid.toString)),
+          orderidOpt.map(orderid => X3RequestOperation("orderid", orderid.toString))
         )
 
-        val x3Request = X3.Request(wmid, signature, requestN, operationOpts.flatten)
+        val x3Request = X3Request(wmid, signature, requestN, operationOpts.flatten)
         X3Action(httpClient).run(x3Request)
     }
   }
@@ -52,7 +51,7 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
                        wmtranidOpt: Optional[java.lang.Long],
                        tranidOpt: Optional[java.lang.Long],
                        wminvidOpt: Optional[java.lang.Long],
-                       orderidOpt: Optional[java.lang.Long]): Either[APIException, X3.Response] = {
+                       orderidOpt: Optional[java.lang.Long]): Either[APIException, X3Response] = {
     runX3Command(wmid, dateStart, dateFinish, Option(wmtranidOpt.get()),
       Option(tranidOpt.get()), Option(wminvidOpt.get()), Option(orderidOpt.get())
     )
@@ -65,19 +64,19 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
     * @param wmid the target WMID
     * @return the payload or error
     */
-  def runX9Command(wmid: String): Either[APIException, X9.Response] = {
+  def runX9Command(wmid: String): Either[APIException, X9Response] = {
     val requestN = Utils.wmReqnGen.toString
     signer.sign(wmid + requestN) match {
       case Left(e) =>
         Left(InvalidParam(cause = e))
       case Right(signature) =>
         X9Action(httpClient).run(
-          X9.Request(wmid, signature, requestN)
+          X9Request(wmid, signature, requestN)
         )
     }
   }
 
-  def runX9CommandJava(wmid: String): Either[APIException, X9.Response] = {
+  def runX9CommandJava(wmid: String): Either[APIException, X9Response] = {
     runX9Command(wmid)
   }
 
