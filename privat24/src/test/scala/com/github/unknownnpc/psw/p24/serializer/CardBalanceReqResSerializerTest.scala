@@ -1,25 +1,24 @@
 package com.github.unknownnpc.psw.p24.serializer
 
-import com.github.unknownnpc.psw.p24.model.P24Model
-import com.github.unknownnpc.psw.p24.model.P24Model.Merchant
+import com.github.unknownnpc.psw.p24.model._
 import org.apache.http.util.EntityUtils
 import org.scalatest.{FunSpec, Matchers}
 
 class CardBalanceReqResSerializerTest extends FunSpec with Matchers {
 
   it("serialize to request") {
-    val request = P24Model.Request(
+    val request = Request(
       "password",
       Merchant(1111, Some("signature")),
-      P24Model.RequestData(
+      RequestData(
         "oper",
         12,
         13,
-        P24Model.RequestDataPayment(
+        RequestDataPayment(
           "id2",
           List(
-            P24Model.RequestDataProp("cardnum", "111"),
-            P24Model.RequestDataProp("country", "UA")
+            RequestDataProp("cardnum", "111"),
+            RequestDataProp("country", "UA")
           )
         )
       )

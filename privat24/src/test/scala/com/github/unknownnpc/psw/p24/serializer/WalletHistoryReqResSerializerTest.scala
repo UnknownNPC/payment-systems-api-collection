@@ -1,7 +1,6 @@
 package com.github.unknownnpc.psw.p24.serializer
 
-import com.github.unknownnpc.psw.p24.model.P24Model
-import com.github.unknownnpc.psw.p24.model.P24Model.Merchant
+import com.github.unknownnpc.psw.p24.model._
 import org.apache.http.util.EntityUtils
 import org.scalatest.{FunSpec, Matchers}
 
@@ -20,19 +19,19 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     val fromPropVal = "01.12.1992"
     val toPropName = "sd"
     val toPropVal = "01.12.1992"
-    val request = P24Model.Request(
+    val request = Request(
       "password",
       Merchant(merchantIdVal, Some("signature")),
-      P24Model.RequestData(
+      RequestData(
         operVal,
         waitField,
         testFieldVal,
-        P24Model.RequestDataPayment(
+        RequestDataPayment(
           paymentId,
           List(
-            P24Model.RequestDataProp(cardPropName, cardPropVal),
-            P24Model.RequestDataProp(fromPropName, fromPropVal),
-            P24Model.RequestDataProp(toPropName, toPropVal)
+            RequestDataProp(cardPropName, cardPropVal),
+            RequestDataProp(fromPropName, fromPropVal),
+            RequestDataProp(toPropName, toPropVal)
           )
         )
       )

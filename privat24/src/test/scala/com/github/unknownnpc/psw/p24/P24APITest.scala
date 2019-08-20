@@ -11,7 +11,7 @@ import org.scalatest.{FunSpec, Matchers}
 import org.scalatestplus.mockito.MockitoSugar
 
 /**
-  * Should be enhansed in unit-test way
+  * Should be enhanced in unit-test way
   */
 class P24APITest extends FunSpec with Matchers with MockitoSugar {
 

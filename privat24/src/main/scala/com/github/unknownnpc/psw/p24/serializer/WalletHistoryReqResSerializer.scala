@@ -1,12 +1,7 @@
 package com.github.unknownnpc.psw.p24.serializer
 
-import java.security.MessageDigest
-import java.text.SimpleDateFormat
-
 import com.github.unknownnpc.psw.api.Serializer
-import com.github.unknownnpc.psw.p24.model.P24Model
-import com.github.unknownnpc.psw.p24.model.P24Model.Merchant
-import com.github.unknownnpc.psw.p24.model.P24Model.WalletHistory._
+import com.github.unknownnpc.psw.p24.model._
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.{ContentType, StringEntity}
 
@@ -15,7 +10,7 @@ import scala.xml.XML
 /**
   * New lines/spaces sensitive. Do not auto-format.
   */
-private[serializer] class WalletHistoryReqResSerializer extends Serializer[P24Model.Request, WalletHistoryResponse, HttpPost, String] with P24SerializerLike {
+private[serializer] class WalletHistoryReqResSerializer extends Serializer[Request, WalletHistoryResponse, HttpPost, String] with P24SerializerLike {
 
   private val urlTarget: String = "https://api.privatbank.ua/p24api/rest_fiz"
 
@@ -26,7 +21,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[P24Mo
     * @param walletHistoryReq the request entity.
     * @return the p24 request on the xml format.
     */
-  override def toReq(req: P24Model.Request): HttpPost = {
+  override def toReq(req: Request): HttpPost = {
 
     def formHttpPostReq(payload: String): HttpPost = {
       val httpPost = new HttpPost(urlTarget)

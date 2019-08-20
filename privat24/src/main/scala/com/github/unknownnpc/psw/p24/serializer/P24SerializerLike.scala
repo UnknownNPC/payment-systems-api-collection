@@ -3,8 +3,7 @@ package com.github.unknownnpc.psw.p24.serializer
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 
-import com.github.unknownnpc.psw.p24.model.P24Model
-import com.github.unknownnpc.psw.p24.model.P24Model.Merchant
+import com.github.unknownnpc.psw.p24.model.{Merchant, Request, RequestData, RequestDataProp}
 import org.apache.commons.codec.binary.Hex
 
 import scala.xml.{Elem, Node}
@@ -18,7 +17,7 @@ trait P24SerializerLike {
     string.replaceAll(">\\s+<", "><")
   }
 
-  def formRequestXmlStr(req: P24Model.Request): String = {
+  def formRequestXmlStr(req: Request): String = {
     val dataXml = requestDataToXml(req.data)
     val merchantXml = merchantToXml(req.merchant, dataXml.child, req.merchantPassword)
 
@@ -52,9 +51,9 @@ trait P24SerializerLike {
     </merchant>
   }
 
-  private def requestDataToXml(walletHistoryRequestData: P24Model.RequestData): Elem = {
+  private def requestDataToXml(walletHistoryRequestData: RequestData): Elem = {
 
-    def walletHistoryRequestDataPropToXml(requestDataProp: P24Model.RequestDataProp): Elem = {
+    def walletHistoryRequestDataPropToXml(requestDataProp: RequestDataProp): Elem = {
       <prop name={requestDataProp.name} value={requestDataProp.value}></prop>
     }
 
