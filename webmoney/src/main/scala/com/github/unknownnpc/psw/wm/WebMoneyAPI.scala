@@ -1,6 +1,6 @@
 package com.github.unknownnpc.psw.wm
 
-import java.util.Date
+import java.util.{Date, Optional}
 
 import com.github.unknownnpc.psw.api.{APIException, InvalidParam}
 import com.github.unknownnpc.psw.wm.action.{X3Action, X9Action}
@@ -48,6 +48,16 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
     }
   }
 
+  def runX3CommandJava(wmid: String, dateStart: Date, dateFinish: Date,
+                       wmtranidOpt: Optional[java.lang.Long],
+                       tranidOpt: Optional[java.lang.Long],
+                       wminvidOpt: Optional[java.lang.Long],
+                       orderidOpt: Optional[java.lang.Long]): Either[APIException, X3.Response] = {
+    runX3Command(wmid, dateStart, dateFinish, Option(wmtranidOpt.get()),
+      Option(tranidOpt.get()), Option(wminvidOpt.get()), Option(orderidOpt.get())
+    )
+  }
+
   /**
     * Selects wallets balance, interface X9:
     * https://wiki.webmoney.ru/projects/webmoney/wiki/%D0%98%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81_X9
@@ -65,6 +75,10 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
           X9.Request(wmid, signature, requestN)
         )
     }
+  }
+
+  def runX9CommandJava(wmid: String): Either[APIException, X9.Response] = {
+    runX9Command(wmid)
   }
 
 }

@@ -20,8 +20,7 @@ lazy val api = project
     settings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.httpClient
-    ),
-    skip in publish := true
+    )
   )
 
 lazy val privat24 = project

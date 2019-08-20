@@ -1,7 +1,7 @@
 package com.github.unknownnpc.psw.p24
 
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.{Date, Optional}
 
 import com.github.unknownnpc.psw.api.APIException
 import com.github.unknownnpc.psw.p24.action.{RetrieveCardBalanceAction, RetrieveTransferHistoryAction}
@@ -46,6 +46,11 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
     RetrieveTransferHistoryAction(httpClient).run(request)
   }
 
+  def retrieveTransferHistoryJava(cardNum: String, from: Date,
+                                  to: Date, waitVal: Optional[java.lang.Long]): Either[APIException, WalletHistoryResponse] = {
+    retrieveTransferHistory(cardNum, from, to, waitVal.orElse(15L))
+  }
+
   /**
     * Retrieves card balance
     * https://api.privatbank.ua/#p24/balance
@@ -73,6 +78,10 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
     RetrieveCardBalanceAction(httpClient).run(request)
   }
 
+  def retrieveCardBalanceJava(cardNum: String, waitVal: Optional[java.lang.Long]): Either[APIException, CardBalance.Response] = {
+    retrieveCardBalance(cardNum, waitVal.orElse(15L))
+  }
+
 }
 
 object P24API {
@@ -80,6 +89,6 @@ object P24API {
   def apply(merchId: Long, merchPass: String,
             httpClient: CloseableHttpClient = HttpClients.createDefault()): P24API = new P24API(merchId, merchPass, httpClient)
 
-  def getInstance(merchId: Long, merchPass: String) = apply(merchId, merchPass)
+  def getInstance(merchId: java.lang.Long, merchPass: String) = apply(merchId, merchPass)
 
 }

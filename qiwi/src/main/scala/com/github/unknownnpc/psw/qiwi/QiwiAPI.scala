@@ -1,11 +1,15 @@
 package com.github.unknownnpc.psw.qiwi
 
+import java.util.Optional
+
 import com.github.unknownnpc.psw.api.APIException
 import com.github.unknownnpc.psw.qiwi.action.{RetrieveAccountBalanceAction, RetrieveTransferHistoryAction}
 import com.github.unknownnpc.psw.qiwi.model.QiwiModel.WalletHistory.{NextPage, ReqSources, ReqTransferType, StartEndDates}
 import com.github.unknownnpc.psw.qiwi.model.QiwiModel.{AccountBalance, WalletHistory}
 import com.github.unknownnpc.psw.qiwi.serializer.QiwiSerializer._
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
+
+import scala.collection.JavaConverters._
 
 private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
 
@@ -30,6 +34,20 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
     )
   }
 
+  def retrieveTransferHistoryJava(personId: String, rows: Optional[Integer],
+                                  operation: Optional[ReqTransferType.Value],
+                                  sources: java.util.List[ReqSources.Value],
+                                  startEndDates: Optional[StartEndDates],
+                                  nextPage: Optional[NextPage]): Either[APIException, WalletHistory.Response] = {
+    retrieveTransferHistory(personId,
+      rows.orElse(10),
+      Option(operation.orElse(ReqTransferType.ALL)),
+      sources.asScala.toList,
+      Option(startEndDates.get),
+      Option(nextPage.get)
+    )
+  }
+
   /**
     * Requests wallets balance
     * https://developer.qiwi.com/ru/qiwi-wallet-personal/#balances_list
@@ -38,6 +56,12 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
     * @return the entity with response or error
     */
   def retrieveAccountBalance(personId: String): Either[APIException, AccountBalance.Response] = {
+    RetrieveAccountBalanceAction(httpClient).run(
+      AccountBalance.Request(token, personId)
+    )
+  }
+
+  def retrieveAccountBalanceJava(personId: String): Either[APIException, AccountBalance.Response] = {
     RetrieveAccountBalanceAction(httpClient).run(
       AccountBalance.Request(token, personId)
     )

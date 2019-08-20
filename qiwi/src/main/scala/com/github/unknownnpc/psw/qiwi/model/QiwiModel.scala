@@ -2,7 +2,7 @@ package com.github.unknownnpc.psw.qiwi.model
 
 import java.util.Date
 
-private[qiwi] object QiwiModel {
+object QiwiModel {
 
   object WalletHistory {
 
