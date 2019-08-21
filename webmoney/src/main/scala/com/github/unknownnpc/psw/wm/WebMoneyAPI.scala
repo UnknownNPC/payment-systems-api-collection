@@ -84,14 +84,14 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
 
 object WebMoneyAPI {
 
-  def apply(wmid: String, password: String, kwmPath: String,
+  def apply(wmid: String, password: String, kwmBytes: Array[Byte],
             httpClient: CloseableHttpClient = InsecureHttpClient.getInstance()): WebMoneyAPI = {
-    val wmSigner = WmSigner(wmid, password, kwmPath)
+    val wmSigner = WmSigner(wmid, password, kwmBytes)
 
     new WebMoneyAPI(wmSigner, wmid, httpClient)
   }
 
-  def getInstance(wmid: String, password: String, kwmPath: String) =
-    apply(wmid, password, kwmPath)
+  def getInstance(wmid: String, password: String, kwmBytes: Array[Byte]) =
+    apply(wmid, password, kwmBytes)
 
 }

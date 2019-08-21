@@ -8,9 +8,7 @@ import javax.xml.bind.DatatypeConverter
 
 import scala.util.{Random, Try}
 
-private[wm] class WmSigner(wmid: String, pass: String, filePath: String, nextRandBytes: Array[Byte] => Unit = Random.nextBytes) {
-
-  private val kwmBytes: Array[Byte] = getFileBytes(filePath)
+private[wm] class WmSigner(wmid: String, kwmPass: String, kwmBytes: Array[Byte], nextRandBytes: Array[Byte] => Unit = Random.nextBytes) {
 
   private val reservedBytes: Array[Byte] = kwmBytes.slice(0, 2)
   private val crc: Array[Byte] = kwmBytes.slice(4, 20)
@@ -82,16 +80,9 @@ private[wm] class WmSigner(wmid: String, pass: String, filePath: String, nextRan
     (0 until length).toList.foldLeft(Array[Byte]()) { case (array, index) => array :+ target(length - 1 - index) }
   }
 
-  private def getFileBytes(resource: String): Array[Byte] = {
-
-    import java.nio.file.{Files, Paths}
-
-    Files.readAllBytes(Paths.get(getClass.getResource(resource).toURI))
-  }
-
   // Weird staff is living here.
   private def getSecureBuffer(buffer: Array[Byte]): Array[Byte] = {
-    val md4hashVal: Array[Byte] = Utils.md4Hash((wmid + pass).getBytes)
+    val md4hashVal: Array[Byte] = Utils.md4Hash((wmid + kwmPass).getBytes)
     val result = Array[Byte]().patch(0, buffer, 6)
     var x = 0
     for (i <- 6 until buffer.length) yield {
@@ -118,6 +109,7 @@ private[wm] class WmSigner(wmid: String, pass: String, filePath: String, nextRan
 
 object WmSigner {
 
-  def apply(wmid: String, pass: String, filePath: String): WmSigner = new WmSigner(wmid, pass, filePath)
+  def apply(wmid: String, kwmPass: String, kwmBytes: Array[Byte]): WmSigner =
+    new WmSigner(wmid, kwmPass, kwmBytes)
 
 }
