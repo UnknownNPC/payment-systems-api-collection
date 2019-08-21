@@ -89,4 +89,6 @@ object P24API {
 
   def getInstance(merchId: java.lang.Long, merchPass: String) = apply(merchId, merchPass)
 
+  def getInstance(merchId: java.lang.Long, merchPass: String, httpClient: CloseableHttpClient) = apply(merchId, merchPass, httpClient)
+
 }

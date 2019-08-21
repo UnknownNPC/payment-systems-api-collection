@@ -94,4 +94,7 @@ object WebMoneyAPI {
   def getInstance(wmid: String, password: String, kwmBytes: Array[Byte]) =
     apply(wmid, password, kwmBytes)
 
+  def getInstance(wmid: String, password: String, kwmBytes: Array[Byte], httpClient: CloseableHttpClient) =
+    apply(wmid, password, kwmBytes, httpClient)
+
 }

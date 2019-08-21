@@ -75,4 +75,6 @@ object QiwiAPI {
 
   def getInstance(token: String) = apply(token)
 
+  def getInstance(token: String, httpClient: CloseableHttpClient) = apply(token, httpClient)
+
 }
