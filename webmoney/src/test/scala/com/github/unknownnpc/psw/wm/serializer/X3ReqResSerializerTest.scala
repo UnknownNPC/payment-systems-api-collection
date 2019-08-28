@@ -2,6 +2,7 @@ package com.github.unknownnpc.psw.wm.serializer
 
 import java.util.Date
 
+import com.github.unknownnpc.psw.api.ExternalAPIPayloadParseException
 import com.github.unknownnpc.psw.wm.Utils.WMDateFormatter
 import com.github.unknownnpc.psw.wm.model.{RetVal, X3Request, X3RequestOperation, X3ResponseOperationType}
 import org.apache.http.util.EntityUtils
@@ -86,6 +87,11 @@ class X3ReqResSerializerTest extends FunSpec with Matchers {
     result.operations.details.head.props(X3ResponseOperationType.dateupd) shouldBe "12"
     result.operations.details.head.props(X3ResponseOperationType.corrwm) shouldBe "13"
     result.operations.details.head.props(X3ResponseOperationType.rest) shouldBe "14"
+  }
+
+  it("should return error when response is invalid") {
+    val result = WebMoneySerializer.x3ReqResSerializer.fromRes("asdasda").left.get
+    result shouldBe a[ExternalAPIPayloadParseException]
   }
 
 }

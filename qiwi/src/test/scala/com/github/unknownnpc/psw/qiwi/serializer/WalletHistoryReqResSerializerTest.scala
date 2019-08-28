@@ -2,6 +2,7 @@ package com.github.unknownnpc.psw.qiwi.serializer
 
 import java.util.Date
 
+import com.github.unknownnpc.psw.api.ExternalAPIPayloadParseException
 import com.github.unknownnpc.psw.qiwi.model.{ReqSources, ReqTransferType, ResStatus, WalletHistoryRequest}
 import org.scalatest.{FunSpec, Matchers}
 
@@ -130,6 +131,11 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
     response.data should have length 0
     response.nextTxnDate shouldBe None
     response.nextTxnId shouldBe None
+  }
+
+  it("should return error when response is invalid") {
+    val result = QiwiSerializer.walletHistoryReqResSerializer.fromRes("asdasda").left.get
+    result shouldBe a[ExternalAPIPayloadParseException]
   }
 
 }
