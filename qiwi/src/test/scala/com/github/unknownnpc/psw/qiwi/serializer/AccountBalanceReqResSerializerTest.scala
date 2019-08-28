@@ -7,7 +7,7 @@ class AccountBalanceReqResSerializerTest extends FunSpec with Matchers {
 
   it("should serialize to request correctly when all params exist") {
     val request = AccountBalanceRequest("token", "personId")
-    val requestSample = QiwiSerializer.accountBalanceReqResSerializer.toReq(request)
+    val requestSample = QiwiSerializer.accountBalanceReqResSerializer.toReq(request).right.get
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
     requestSample.getURI.toString shouldBe "https://edge.qiwi.com/funding-sources/v2/persons/personId/accounts"
@@ -16,7 +16,7 @@ class AccountBalanceReqResSerializerTest extends FunSpec with Matchers {
   it("should serialize to request with valid headers") {
     val token = "token123"
     val request = AccountBalanceRequest(token, "wallet")
-    val requestSample = QiwiSerializer.accountBalanceReqResSerializer.toReq(request)
+    val requestSample = QiwiSerializer.accountBalanceReqResSerializer.toReq(request).right.get
     requestSample.getAllHeaders.head.getName shouldBe "Authorization"
     requestSample.getAllHeaders.head.getValue shouldBe s"Bearer $token"
     requestSample.getAllHeaders.lift(1).get.getName shouldBe "Accept"
@@ -47,7 +47,7 @@ class AccountBalanceReqResSerializerTest extends FunSpec with Matchers {
         |  ]
         |}""".stripMargin
 
-    val response = QiwiSerializer.accountBalanceReqResSerializer.fromRes(responseStr)
+    val response = QiwiSerializer.accountBalanceReqResSerializer.fromRes(responseStr).right.get
     response.accounts.head.alias shouldBe "qw_wallet_rub"
     response.accounts.head.fsAlias shouldBe "qb_wallet"
     response.accounts.head.bankAlias shouldBe "QIWI"

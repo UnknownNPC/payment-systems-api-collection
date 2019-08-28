@@ -24,7 +24,7 @@ class CardBalanceReqResSerializerTest extends FunSpec with Matchers {
       )
     )
 
-    val requestSample = P24Serializer.cardBalanceReqResSerializer.toReq(request)
+    val requestSample = P24Serializer.cardBalanceReqResSerializer.toReq(request).right.get
 
     requestSample should not be null
     requestSample.getAllHeaders.toList shouldBe List()
@@ -68,7 +68,7 @@ class CardBalanceReqResSerializerTest extends FunSpec with Matchers {
                 </data>
             </response>""".stripMargin
 
-    val result = P24Serializer.cardBalanceReqResSerializer.fromRes(responseSample)
+    val result = P24Serializer.cardBalanceReqResSerializer.fromRes(responseSample).right.get
 
     result should not be null
     result.merchant.id shouldBe 75482

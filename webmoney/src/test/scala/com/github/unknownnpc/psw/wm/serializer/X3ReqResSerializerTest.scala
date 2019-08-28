@@ -20,7 +20,7 @@ class X3ReqResSerializerTest extends FunSpec with Matchers {
       X3RequestOperation("wminvid", "wminvid"),
       X3RequestOperation("orderid", "orderid")
     ))
-    val requestSample = WebMoneySerializer.x3ReqResSerializer.toReq(request)
+    val requestSample = WebMoneySerializer.x3ReqResSerializer.toReq(request).right.get
     requestSample should not be null
     requestSample.getAllHeaders.toList shouldBe List()
     val requestBody = EntityUtils.toString(requestSample.getEntity)
@@ -62,7 +62,7 @@ class X3ReqResSerializerTest extends FunSpec with Matchers {
         |    </operations>
         |</w3s.response>
       """.stripMargin
-    val result = WebMoneySerializer.x3ReqResSerializer.fromRes(rawResponse)
+    val result = WebMoneySerializer.x3ReqResSerializer.fromRes(rawResponse).right.get
     result should not be null
     result.reqn shouldBe 1
     result.retval shouldBe RetVal.OK

@@ -7,5 +7,9 @@ class InvalidParam(message: String = "Invalid external param", cause: Throwable)
   extends APIException(message, cause)
 
 final case
-class ExternalAPIException(message: String = "External request error", cause: Throwable)
+class ExternalAPICallException(message: String = "External request error", cause: Throwable)
+  extends APIException(message, cause)
+
+final case
+class ExternalAPIPayloadParseException(message: String = "Unable to parse payload", cause: Throwable)
   extends APIException(message, cause)

@@ -3,7 +3,8 @@ package com.github.unknownnpc.psw.qiwi.serializer
 import java.text.SimpleDateFormat
 import java.util.{Date, TimeZone}
 
-import com.github.unknownnpc.psw.api.Serializer
+import com.github.unknownnpc.psw.api.Utils.safeParse
+import com.github.unknownnpc.psw.api.{ExternalAPIPayloadParseException, Serializer}
 import com.github.unknownnpc.psw.qiwi.model.{ResStatus, WalletHistoryRequest, WalletHistoryResponse}
 import org.apache.http.client.methods.HttpGet
 import org.json4s.CustomSerializer
@@ -24,40 +25,43 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Walle
     setTimeZone(TimeZone.getTimeZone("GMT"))
   }
 
-  override def toReq(req: WalletHistoryRequest): HttpGet = {
+  override def toReq(req: WalletHistoryRequest): Either[ExternalAPIPayloadParseException, HttpGet] = {
+    safeParse {
+      def queryParam(name: String, value: String): String = s"$name=$value"
 
-    def queryParam(name: String, value: String): String = s"$name=$value"
+      val paramsList = for {
+        operation <- req.operation.map(t => queryParam(OperationParam, t.toString))
+        sources <- Some(req.sources).map(sources => sources.map(s => queryParam(SourcesParam, s.id.toString)))
+        startEndDates <- req.startEndDates.map(se => {
+          val startStr = qiwiReqDateFormatter.format(se._1)
+          val endStr = qiwiReqDateFormatter.format(se._2)
+          List(queryParam(StartDateParam, startStr), queryParam(EndDateParam, endStr))
+        })
+        nextPage <- req.nextPage.map(np => {
+          val nextTxnDateStr = qiwiReqDateFormatter.format(np._1)
+          List(queryParam(NextTxnDateParam, nextTxnDateStr), queryParam(NextTxnIdParam, np._2.toString))
+        })
+      } yield List(operation) ++ sources ++ startEndDates ++ nextPage
 
-    val paramsList = for {
-      operation <- req.operation.map(t => queryParam(OperationParam, t.toString))
-      sources <- Some(req.sources).map(sources => sources.map(s => queryParam(SourcesParam, s.id.toString)))
-      startEndDates <- req.startEndDates.map(se => {
-        val startStr = qiwiReqDateFormatter.format(se._1)
-        val endStr = qiwiReqDateFormatter.format(se._2)
-        List(queryParam(StartDateParam, startStr), queryParam(EndDateParam, endStr))
-      })
-      nextPage <- req.nextPage.map(np => {
-        val nextTxnDateStr = qiwiReqDateFormatter.format(np._1)
-        List(queryParam(NextTxnDateParam, nextTxnDateStr), queryParam(NextTxnIdParam, np._2.toString))
-      })
-    } yield List(operation) ++ sources ++ startEndDates ++ nextPage
+      val paramsStr = paramsList.map(_.mkString("&")).getOrElse("")
+      val fullRequestUrl = String.format(urlTarget, req.personId, req.rows.toString) + paramsStr
+      val httpGet = new HttpGet(fullRequestUrl)
+      httpGet.setHeader("Authorization", "Bearer " + req.apiToken)
+      httpGet.setHeader("Accept", "application/json")
 
-    val paramsStr = paramsList.map(_.mkString("&")).getOrElse("")
-    val fullRequestUrl = String.format(urlTarget, req.personId, req.rows.toString) + paramsStr
-    val httpGet = new HttpGet(fullRequestUrl)
-    httpGet.setHeader("Authorization", "Bearer " + req.apiToken)
-    httpGet.setHeader("Accept", "application/json")
-
-    httpGet
+      httpGet
+    }
   }
 
-  override def fromRes(out: String): WalletHistoryResponse = {
+  override def fromRes(out: String): Either[ExternalAPIPayloadParseException, WalletHistoryResponse] = {
     import org.json4s._
     import org.json4s.native.Serialization
     import org.json4s.native.Serialization.read
     implicit val formats = Serialization.formats(NoTypeHints) + CustomDateSerializer + ResStatusSerializer
 
-    read[WalletHistoryResponse](out)
+    safeParse {
+      read[WalletHistoryResponse](out)
+    }
   }
 
   object CustomDateSerializer extends CustomSerializer[Date](_ => ( {

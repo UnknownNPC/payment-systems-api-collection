@@ -37,7 +37,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
       )
     )
 
-    val requestSample = P24Serializer.walletHistoryReqResSerializer.toReq(request)
+    val requestSample = P24Serializer.walletHistoryReqResSerializer.toReq(request).right.get
 
     requestSample should not be null
     requestSample.getAllHeaders.toList shouldBe List()
@@ -84,7 +84,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
          |            </response>
       """.stripMargin
 
-    val result = P24Serializer.walletHistoryReqResSerializer.fromRes(responseSample)
+    val result = P24Serializer.walletHistoryReqResSerializer.fromRes(responseSample).right.get
 
     result should not be null
     result.merchant.id shouldBe idVal

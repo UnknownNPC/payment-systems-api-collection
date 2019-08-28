@@ -11,7 +11,7 @@ class X9ReqResSerializerTest extends FunSpec with Matchers {
   it("serialize to request") {
     val testDate = new Date(0)
     val request = X9Request("wmid", "sign", "reqN")
-    val requestSample = WebMoneySerializer.x9ReqResSerializer.toReq(request)
+    val requestSample = WebMoneySerializer.x9ReqResSerializer.toReq(request).right.get
     requestSample should not be null
     requestSample.getAllHeaders.toList shouldBe List()
 
@@ -48,7 +48,7 @@ class X9ReqResSerializerTest extends FunSpec with Matchers {
         |</w3s.response>
       """.stripMargin
 
-    val result = WebMoneySerializer.x9ReqResSerializer.fromRes(rawResponse)
+    val result = WebMoneySerializer.x9ReqResSerializer.fromRes(rawResponse).right.get
 
     result should not be null
     result.reqn shouldBe 1

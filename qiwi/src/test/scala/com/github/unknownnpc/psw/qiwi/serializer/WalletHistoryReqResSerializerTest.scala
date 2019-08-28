@@ -15,7 +15,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
       Some(fromDate, toDate), Some(toDate, 2L)
     )
 
-    val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
+    val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request).right.get
 
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
@@ -25,7 +25,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
   it("should serialize to request correctly when all params default") {
     val request = WalletHistoryRequest("token", "wallet", 11)
-    val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
+    val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request).right.get
     requestSample should not be null
     requestSample.getAllHeaders.toList should have size 2
     requestSample.getURI.toString shouldBe "https://edge.qiwi.com/payment-history/v2/persons/wallet/payments?rows=11&"
@@ -34,7 +34,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
   it("should serialize to request with valid headers") {
     val token = "token123"
     val request = WalletHistoryRequest(token, "wallet", 11)
-    val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request)
+    val requestSample = QiwiSerializer.walletHistoryReqResSerializer.toReq(request).right.get
     requestSample.getAllHeaders.head.getName shouldBe "Authorization"
     requestSample.getAllHeaders.head.getValue shouldBe s"Bearer $token"
     requestSample.getAllHeaders.lift(1).get.getName shouldBe "Accept"
@@ -91,7 +91,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
         |}
       """.stripMargin
 
-    val response = QiwiSerializer.walletHistoryReqResSerializer.fromRes(responseStr)
+    val response = QiwiSerializer.walletHistoryReqResSerializer.fromRes(responseStr).right.get
 
     response.nextTxnId shouldBe Some(9001)
     response.nextTxnDate should not be null
@@ -126,7 +126,7 @@ class WalletHistoryReqResSerializerTest extends FunSpec with Matchers {
 
   it("serialize from empty response") {
     val responseStr = "{\"data\":[],\"nextTxnId\":null,\"nextTxnDate\":null}"
-    val response = QiwiSerializer.walletHistoryReqResSerializer.fromRes(responseStr)
+    val response = QiwiSerializer.walletHistoryReqResSerializer.fromRes(responseStr).right.get
     response.data should have length 0
     response.nextTxnDate shouldBe None
     response.nextTxnId shouldBe None

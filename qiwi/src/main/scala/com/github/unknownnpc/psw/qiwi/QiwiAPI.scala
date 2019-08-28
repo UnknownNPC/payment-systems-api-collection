@@ -51,7 +51,7 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
     * Requests wallets balance
     * https://developer.qiwi.com/ru/qiwi-wallet-personal/#balances_list
     *
-    * @param personId the personId valie, eg: 30501234567
+    * @param personId the personId value, eg: 30501234567
     * @return the entity with response or error
     */
   def retrieveAccountBalance(personId: String): Either[APIException, AccountBalanceResponse] = {
