@@ -1,7 +1,7 @@
 package com.github.unknownnpc.psw.wm.serializer
 
 import com.github.unknownnpc.psw.api.Utils.safeParse
-import com.github.unknownnpc.psw.api.{ExternalAPIPayloadParseException, Serializer}
+import com.github.unknownnpc.psw.api.{APIParseException, Serializer}
 import com.github.unknownnpc.psw.wm.model._
 import org.apache.http.client.methods.HttpPost
 
@@ -11,7 +11,7 @@ private[serializer] class X9ReqResSerializer extends Serializer[X9Request, X9Res
 
   private val urlTarget: String = "https://w3s.webmoney.ru/asp/XMLPurses.asp"
 
-  override def toReq(obj: X9Request): Either[ExternalAPIPayloadParseException, HttpPost] = {
+  override def toReq(obj: X9Request): Either[APIParseException, HttpPost] = {
 
     def xmlReq(obj: X9Request): Elem = {
       <w3s.request>
@@ -29,7 +29,7 @@ private[serializer] class X9ReqResSerializer extends Serializer[X9Request, X9Res
     }
   }
 
-  override def fromRes(out: String): Either[ExternalAPIPayloadParseException, X9Response] = {
+  override def fromRes(out: String): Either[APIParseException, X9Response] = {
     safeParse {
       val unPrettyOut = out.replaceAll(">\\s+<", "><")
       val responseXml = XML.loadString(unPrettyOut)

@@ -11,5 +11,5 @@ class ExternalAPICallException(message: String = "External request error", cause
   extends APIException(message, cause)
 
 final case
-class ExternalAPIPayloadParseException(message: String = "Unable to parse payload", cause: Throwable)
+class APIParseException(message: String = "Unable to parse payload", cause: Throwable)
   extends APIException(message, cause)

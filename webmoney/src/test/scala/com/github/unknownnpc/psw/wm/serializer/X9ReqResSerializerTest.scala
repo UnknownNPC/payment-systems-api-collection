@@ -2,7 +2,7 @@ package com.github.unknownnpc.psw.wm.serializer
 
 import java.util.Date
 
-import com.github.unknownnpc.psw.api.ExternalAPIPayloadParseException
+import com.github.unknownnpc.psw.api.APIParseException
 import com.github.unknownnpc.psw.wm.model.{RetVal, X9Request}
 import org.apache.http.util.EntityUtils
 import org.scalatest.{FunSpec, Matchers}
@@ -66,7 +66,7 @@ class X9ReqResSerializerTest extends FunSpec with Matchers {
 
   it("should return error when response is invalid") {
     val result = WebMoneySerializer.x9ReqResSerializer.fromRes("asdasda").left.get
-    result shouldBe a[ExternalAPIPayloadParseException]
+    result shouldBe a[APIParseException]
   }
 
 }

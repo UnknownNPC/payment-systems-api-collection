@@ -1,7 +1,7 @@
 package com.github.unknownnpc.psw.qiwi.serializer
 
 import com.github.unknownnpc.psw.api.Utils.safeParse
-import com.github.unknownnpc.psw.api.{ExternalAPIPayloadParseException, Serializer}
+import com.github.unknownnpc.psw.api.{APIParseException, Serializer}
 import com.github.unknownnpc.psw.qiwi.model.{AccountBalanceRequest, AccountBalanceResponse}
 import org.apache.http.client.methods.HttpGet
 
@@ -9,7 +9,7 @@ private[serializer] class AccountBalanceReqResSerializer extends Serializer[Acco
 
   private val urlTarget: String = "https://edge.qiwi.com/funding-sources/v2/persons/%s/accounts"
 
-  override def toReq(req: AccountBalanceRequest): Either[ExternalAPIPayloadParseException, HttpGet] = {
+  override def toReq(req: AccountBalanceRequest): Either[APIParseException, HttpGet] = {
     safeParse {
       val fullRequestUrl = String.format(urlTarget, req.wallet)
       val httpGet = new HttpGet(fullRequestUrl)
@@ -20,7 +20,7 @@ private[serializer] class AccountBalanceReqResSerializer extends Serializer[Acco
     }
   }
 
-  override def fromRes(out: String): Either[ExternalAPIPayloadParseException, AccountBalanceResponse] = {
+  override def fromRes(out: String): Either[APIParseException, AccountBalanceResponse] = {
     import org.json4s._
     import org.json4s.native.Serialization
     import org.json4s.native.Serialization.read

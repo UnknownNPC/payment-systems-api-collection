@@ -1,6 +1,6 @@
 package com.github.unknownnpc.psw.p24.serializer
 
-import com.github.unknownnpc.psw.api.ExternalAPIPayloadParseException
+import com.github.unknownnpc.psw.api.APIParseException
 import com.github.unknownnpc.psw.p24.model._
 import org.apache.http.util.EntityUtils
 import org.scalatest.{FunSpec, Matchers}
@@ -94,7 +94,7 @@ class CardBalanceReqResSerializerTest extends FunSpec with Matchers {
 
   it("should return error when response is invalid") {
     val result = P24Serializer.cardBalanceReqResSerializer.fromRes("asdasda").left.get
-    result shouldBe a[ExternalAPIPayloadParseException]
+    result shouldBe a[APIParseException]
   }
 
 }

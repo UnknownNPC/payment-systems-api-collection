@@ -1,7 +1,7 @@
 package com.github.unknownnpc.psw.p24.serializer
 
 import com.github.unknownnpc.psw.api.Utils.safeParse
-import com.github.unknownnpc.psw.api.{ExternalAPIPayloadParseException, Serializer}
+import com.github.unknownnpc.psw.api.{APIParseException, Serializer}
 import com.github.unknownnpc.psw.p24.model._
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.{ContentType, StringEntity}
@@ -22,7 +22,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Reque
     * @param walletHistoryReq the request entity.
     * @return the p24 request on the xml format.
     */
-  override def toReq(req: Request): Either[ExternalAPIPayloadParseException, HttpPost] = {
+  override def toReq(req: Request): Either[APIParseException, HttpPost] = {
     safeParse {
       def formHttpPostReq(payload: String): HttpPost = {
         val httpPost = new HttpPost(urlTarget)
@@ -36,7 +36,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Reque
     }
   }
 
-  override def fromRes(out: String): Either[ExternalAPIPayloadParseException, WalletHistoryResponse] = {
+  override def fromRes(out: String): Either[APIParseException, WalletHistoryResponse] = {
     safeParse {
       val responseXml = XML.loadString(unPrettyOut(out))
 

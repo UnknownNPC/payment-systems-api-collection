@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.{Date, TimeZone}
 
 import com.github.unknownnpc.psw.api.Utils.safeParse
-import com.github.unknownnpc.psw.api.{ExternalAPIPayloadParseException, Serializer}
+import com.github.unknownnpc.psw.api.{APIParseException, Serializer}
 import com.github.unknownnpc.psw.qiwi.model.{ResStatus, WalletHistoryRequest, WalletHistoryResponse}
 import org.apache.http.client.methods.HttpGet
 import org.json4s.CustomSerializer
@@ -25,7 +25,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Walle
     setTimeZone(TimeZone.getTimeZone("GMT"))
   }
 
-  override def toReq(req: WalletHistoryRequest): Either[ExternalAPIPayloadParseException, HttpGet] = {
+  override def toReq(req: WalletHistoryRequest): Either[APIParseException, HttpGet] = {
     safeParse {
       def queryParam(name: String, value: String): String = s"$name=$value"
 
@@ -53,7 +53,7 @@ private[serializer] class WalletHistoryReqResSerializer extends Serializer[Walle
     }
   }
 
-  override def fromRes(out: String): Either[ExternalAPIPayloadParseException, WalletHistoryResponse] = {
+  override def fromRes(out: String): Either[APIParseException, WalletHistoryResponse] = {
     import org.json4s._
     import org.json4s.native.Serialization
     import org.json4s.native.Serialization.read

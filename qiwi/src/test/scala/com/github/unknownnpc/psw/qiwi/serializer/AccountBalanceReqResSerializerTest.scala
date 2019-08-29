@@ -1,6 +1,6 @@
 package com.github.unknownnpc.psw.qiwi.serializer
 
-import com.github.unknownnpc.psw.api.ExternalAPIPayloadParseException
+import com.github.unknownnpc.psw.api.APIParseException
 import com.github.unknownnpc.psw.qiwi.model.AccountBalanceRequest
 import org.scalatest.{FunSpec, Matchers}
 
@@ -64,7 +64,7 @@ class AccountBalanceReqResSerializerTest extends FunSpec with Matchers {
 
   it("should return error when response is invalid") {
     val result = QiwiSerializer.accountBalanceReqResSerializer.fromRes("asdasda").left.get
-    result shouldBe a[ExternalAPIPayloadParseException]
+    result shouldBe a[APIParseException]
   }
 
 }

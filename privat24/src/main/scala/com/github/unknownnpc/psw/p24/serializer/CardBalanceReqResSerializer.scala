@@ -1,7 +1,7 @@
 package com.github.unknownnpc.psw.p24.serializer
 
 import com.github.unknownnpc.psw.api.Utils.safeParse
-import com.github.unknownnpc.psw.api.{ExternalAPIPayloadParseException, Serializer}
+import com.github.unknownnpc.psw.api.{APIParseException, Serializer}
 import com.github.unknownnpc.psw.p24.model._
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.{ContentType, StringEntity}
@@ -12,7 +12,7 @@ private[serializer] class CardBalanceReqResSerializer extends Serializer[Request
 
   private val urlTarget: String = "https://api.privatbank.ua/p24api/balance"
 
-  override def toReq(obj: Request): Either[ExternalAPIPayloadParseException, HttpPost] = {
+  override def toReq(obj: Request): Either[APIParseException, HttpPost] = {
     safeParse {
       def formHttpPostReq(payload: String): HttpPost = {
         val httpPost = new HttpPost(urlTarget)
@@ -26,7 +26,7 @@ private[serializer] class CardBalanceReqResSerializer extends Serializer[Request
     }
   }
 
-  override def fromRes(out: String): Either[ExternalAPIPayloadParseException, CardBalanceResponse] = {
+  override def fromRes(out: String): Either[APIParseException, CardBalanceResponse] = {
     safeParse {
       val responseXml = XML.loadString(unPrettyOut(out))
 

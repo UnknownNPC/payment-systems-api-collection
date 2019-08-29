@@ -1,7 +1,7 @@
 package com.github.unknownnpc.psw.wm.serializer
 
 import com.github.unknownnpc.psw.api.Utils.safeParse
-import com.github.unknownnpc.psw.api.{ExternalAPIPayloadParseException, Serializer}
+import com.github.unknownnpc.psw.api.{APIParseException, Serializer}
 import com.github.unknownnpc.psw.wm.model._
 import org.apache.http.client.methods.HttpPost
 
@@ -11,7 +11,7 @@ private[serializer] class X3ReqResSerializer extends Serializer[X3Request, X3Res
 
   private val urlTarget: String = "https://w3s.webmoney.ru/asp/XMLOperations.asp"
 
-  override def toReq(obj: X3Request): Either[ExternalAPIPayloadParseException, HttpPost] = {
+  override def toReq(obj: X3Request): Either[APIParseException, HttpPost] = {
 
     def operation(op: X3RequestOperation): Elem = {
       scala.xml.XML.loadString(s"<${op.name}>${op.value}</${op.name}>")
@@ -37,7 +37,7 @@ private[serializer] class X3ReqResSerializer extends Serializer[X3Request, X3Res
     }
   }
 
-  override def fromRes(out: String): Either[ExternalAPIPayloadParseException, X3Response] = {
+  override def fromRes(out: String): Either[APIParseException, X3Response] = {
     safeParse {
       val unPrettyOut = out.replaceAll(">\\s+<", "><")
       val responseXml = XML.loadString(unPrettyOut)

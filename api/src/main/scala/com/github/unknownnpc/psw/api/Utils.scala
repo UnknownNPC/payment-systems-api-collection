@@ -2,9 +2,9 @@ package com.github.unknownnpc.psw.api
 
 object Utils {
 
-  def safeParse[T](fn: => T): Either[ExternalAPIPayloadParseException, T] = {
+  def safeParse[T](fn: => T): Either[APIParseException, T] = {
     import scala.util.control.Exception.allCatch
-    allCatch.either(fn).left.map(e => ExternalAPIPayloadParseException(cause = e))
+    allCatch.either(fn).left.map(e => APIParseException(cause = e))
   }
 
 }
