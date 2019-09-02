@@ -9,7 +9,9 @@ import com.github.unknownnpc.psw.p24.model._
 import com.github.unknownnpc.psw.p24.serializer.P24Serializer._
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 
-private[p24] class P24API(merchId: Long, merchPass: String, httpClient: CloseableHttpClient) {
+private[p24] class P24API(merchId: Long, merchPass: String,
+                          retrieveTransferHistoryAction: RetrieveTransferHistoryAction,
+                          retrieveCardBalanceAction: RetrieveCardBalanceAction) {
 
   private val p24ReqDateFormatter = new SimpleDateFormat(WalletRequestHistoryDateFormat)
 
@@ -41,7 +43,7 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
       )
     )
 
-    RetrieveTransferHistoryAction(httpClient).run(request)
+    retrieveTransferHistoryAction.run(request)
   }
 
   def retrieveTransferHistoryJava(cardNum: String, from: Date,
@@ -73,7 +75,7 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
       )
     )
 
-    RetrieveCardBalanceAction(httpClient).run(request)
+    retrieveCardBalanceAction.run(request)
   }
 
   def retrieveCardBalanceJava(cardNum: String, waitVal: Optional[java.lang.Long]): Either[APIException, CardBalanceResponse] = {
@@ -85,7 +87,13 @@ private[p24] class P24API(merchId: Long, merchPass: String, httpClient: Closeabl
 object P24API {
 
   def apply(merchId: Long, merchPass: String,
-            httpClient: CloseableHttpClient = HttpClients.createDefault()): P24API = new P24API(merchId, merchPass, httpClient)
+            httpClient: CloseableHttpClient = HttpClients.createDefault()): P24API = {
+
+    val retrieveTransferHistoryAction = RetrieveTransferHistoryAction(httpClient)
+    val retrieveCardBalanceAction = RetrieveCardBalanceAction(httpClient)
+
+    new P24API(merchId, merchPass, retrieveTransferHistoryAction, retrieveCardBalanceAction)
+  }
 
   def getInstance(merchId: java.lang.Long, merchPass: String) = apply(merchId, merchPass)
 

@@ -10,7 +10,9 @@ import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 
 import scala.collection.JavaConverters._
 
-private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
+private[qiwi] class QiwiAPI(token: String,
+                            retrieveTransferHistoryAction: RetrieveTransferHistoryAction,
+                            retrieveAccountBalanceAction: RetrieveAccountBalanceAction) {
 
   /**
     * Warn: API limit is ltq 100 requests per minute, otherwise client ban for 5 minunutes
@@ -28,7 +30,7 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
                               operation: Option[ReqTransferType.Value] = Some(ReqTransferType.ALL),
                               sources: List[ReqSources.Value] = List.empty, startEndDates: Option[WalletHistory#StartEndDates] = None,
                               nextPage: Option[WalletHistory#NextPage] = None): Either[APIException, WalletHistoryResponse] = {
-    RetrieveTransferHistoryAction(httpClient).run(
+    retrieveTransferHistoryAction.run(
       WalletHistoryRequest(token, personId, rows, operation, sources, startEndDates, nextPage)
     )
   }
@@ -55,23 +57,26 @@ private[qiwi] class QiwiAPI(token: String, httpClient: CloseableHttpClient) {
     * @return the entity with response or error
     */
   def retrieveAccountBalance(personId: String): Either[APIException, AccountBalanceResponse] = {
-    RetrieveAccountBalanceAction(httpClient).run(
+    retrieveAccountBalanceAction.run(
       AccountBalanceRequest(token, personId)
     )
   }
 
   def retrieveAccountBalanceJava(personId: String): Either[APIException, AccountBalanceResponse] = {
-    RetrieveAccountBalanceAction(httpClient).run(
-      AccountBalanceRequest(token, personId)
-    )
+    retrieveAccountBalance(personId)
   }
 
 }
 
 object QiwiAPI {
 
-  def apply(token: String, httpClient: CloseableHttpClient = HttpClients.createDefault()): QiwiAPI =
-    new QiwiAPI(token, httpClient)
+  def apply(token: String, httpClient: CloseableHttpClient = HttpClients.createDefault()): QiwiAPI = {
+
+    val retrieveTransferHistoryAction = RetrieveTransferHistoryAction(httpClient)
+    val retrieveAccountBalanceAction = RetrieveAccountBalanceAction(httpClient)
+
+    new QiwiAPI(token, retrieveTransferHistoryAction, retrieveAccountBalanceAction)
+  }
 
   def getInstance(token: String) = apply(token)
 

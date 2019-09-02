@@ -6,9 +6,8 @@ import com.github.unknownnpc.psw.wm.model.{X9Request, X9Response}
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.CloseableHttpClient
 
-private[action] trait X9Action extends
-  ActionContext[X9Request, X9Response, HttpPost, String] with RestHttpExecutor[HttpPost] {
-}
+private[wm] trait X9Action extends
+  ActionContext[X9Request, X9Response, HttpPost, String] with RestHttpExecutor[HttpPost]
 
 object X9Action {
 

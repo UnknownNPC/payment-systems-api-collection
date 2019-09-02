@@ -6,7 +6,7 @@ import com.github.unknownnpc.psw.p24.model.{CardBalanceResponse, Request}
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.CloseableHttpClient
 
-private[action] trait RetrieveCardBalanceAction extends
+private[p24] trait RetrieveCardBalanceAction extends
   ActionContext[Request, CardBalanceResponse, HttpPost, String] with RestHttpExecutor[HttpPost]
 
 object RetrieveCardBalanceAction {

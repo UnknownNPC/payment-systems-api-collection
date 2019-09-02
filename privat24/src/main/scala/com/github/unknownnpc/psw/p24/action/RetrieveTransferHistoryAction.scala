@@ -6,7 +6,7 @@ import com.github.unknownnpc.psw.p24.model.{Request, WalletHistoryResponse}
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.CloseableHttpClient
 
-private[action] trait RetrieveTransferHistoryAction extends
+private[p24] trait RetrieveTransferHistoryAction extends
   ActionContext[Request, WalletHistoryResponse, HttpPost, String] with RestHttpExecutor[HttpPost]
 
 object RetrieveTransferHistoryAction {

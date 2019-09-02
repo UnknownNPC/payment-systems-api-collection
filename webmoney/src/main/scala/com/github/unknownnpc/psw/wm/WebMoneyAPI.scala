@@ -10,7 +10,9 @@ import com.github.unknownnpc.psw.wm.serializer.WebMoneySerializer._
 import com.github.unknownnpc.psw.wm.signer.WmSigner
 import org.apache.http.impl.client.CloseableHttpClient
 
-class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClient) {
+class WebMoneyAPI(signer: WmSigner, wmid: String,
+                  x3Action: X3Action,
+                  x9Action: X9Action) {
 
   /**
     * Select wm wallet history, interface X3:
@@ -43,7 +45,7 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
         )
 
         val x3Request = X3Request(wmid, signature, requestN, operationOpts.flatten)
-        X3Action(httpClient).run(x3Request)
+        x3Action.run(x3Request)
     }
   }
 
@@ -70,7 +72,7 @@ class WebMoneyAPI(signer: WmSigner, wmid: String, httpClient: CloseableHttpClien
       case Left(e) =>
         Left(InvalidParam(cause = e))
       case Right(signature) =>
-        X9Action(httpClient).run(
+        x9Action.run(
           X9Request(wmid, signature, requestN)
         )
     }
@@ -86,9 +88,12 @@ object WebMoneyAPI {
 
   def apply(wmid: String, password: String, kwmBytes: Array[Byte],
             httpClient: CloseableHttpClient = InsecureHttpClient.getInstance()): WebMoneyAPI = {
-    val wmSigner = WmSigner(wmid, password, kwmBytes)
 
-    new WebMoneyAPI(wmSigner, wmid, httpClient)
+    val wmSigner = WmSigner(wmid, password, kwmBytes)
+    val x3Action = X3Action(httpClient)
+    val x9Action = X9Action(httpClient)
+
+    new WebMoneyAPI(wmSigner, wmid, x3Action, x9Action)
   }
 
   def getInstance(wmid: String, password: String, kwmBytes: Array[Byte]) =

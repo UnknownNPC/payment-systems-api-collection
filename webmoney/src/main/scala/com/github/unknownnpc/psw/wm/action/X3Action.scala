@@ -6,7 +6,7 @@ import com.github.unknownnpc.psw.wm.model.{X3Request, X3Response}
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.CloseableHttpClient
 
-private[action] trait X3Action extends
+private[wm] trait X3Action extends
   ActionContext[X3Request, X3Response, HttpPost, String] with RestHttpExecutor[HttpPost]
 
 object X3Action {
