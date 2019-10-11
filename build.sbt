@@ -11,7 +11,8 @@ lazy val global = project
     api,
     privat24,
     qiwi,
-    webmoney
+    webmoney,
+    advcash
   )
 
 lazy val api = project
@@ -53,6 +54,19 @@ lazy val qiwi = project
 lazy val webmoney = project
   .settings(
     name := "webmoney",
+    settings,
+    mavenPublishSettings,
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.scalaXml
+    )
+  )
+  .dependsOn(
+    api
+  )
+
+lazy val advcash = project
+  .settings(
+    name := "advcash",
     settings,
     mavenPublishSettings,
     libraryDependencies ++= commonDependencies ++ Seq(

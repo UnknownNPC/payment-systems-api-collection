@@ -3,6 +3,7 @@ package com.github.unknownnpc.psw.p24.serializer
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 
+import com.github.unknownnpc.psw.api.Utils.unPrettyOut
 import com.github.unknownnpc.psw.p24.model.{Merchant, Request, RequestData, RequestDataProp}
 import org.apache.commons.codec.binary.Hex
 
@@ -12,10 +13,6 @@ trait P24SerializerLike {
 
   val p24ResponseDateFormatter = new SimpleDateFormat("yyyy-MM-dd")
   val p24ResponseDateTimeFormatter = new SimpleDateFormat("dd.MM.yy HH:mm")
-
-  def unPrettyOut(string: String): String = {
-    string.replaceAll(">\\s+<", "><")
-  }
 
   def formRequestXmlStr(req: Request): String = {
     val dataXml = requestDataToXml(req.data)

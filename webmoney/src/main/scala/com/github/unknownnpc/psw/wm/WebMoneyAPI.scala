@@ -54,8 +54,9 @@ class WebMoneyAPI(signer: WmSigner, wmid: String,
                        tranidOpt: Optional[java.lang.Long],
                        wminvidOpt: Optional[java.lang.Long],
                        orderidOpt: Optional[java.lang.Long]): Either[APIException, X3Response] = {
-    runX3Command(wmid, dateStart, dateFinish, Option(wmtranidOpt.get()),
-      Option(tranidOpt.get()), Option(wminvidOpt.get()), Option(orderidOpt.get())
+    runX3Command(wmid, dateStart, dateFinish, Option(wmtranidOpt.orElse(null)),
+      Option(tranidOpt.orElse(null)), Option(wminvidOpt.orElse(null)),
+      Option(orderidOpt.orElse(null))
     )
   }
 
