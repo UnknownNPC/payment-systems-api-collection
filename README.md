@@ -1,7 +1,5 @@
-[![Build Status](https://travis-ci.org/UnknownNPC/payment-systems-wrapper.svg?branch=master)](https://travis-ci.org/UnknownNPC/payment-systems-api-collection)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/privat24_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/privat24_2.12)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/webmoney_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/webmoney_2.12)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/qiwi_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/qiwi_2.12)
+[![Build Status](https://travis-ci.org/UnknownNPC/payment-systems-api-collection.svg?branch=master)](https://travis-ci.org/UnknownNPC/payment-systems-api-collection)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/api_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.unknownnpc.psw/api_2.12)
 
 Payment Systems API Collection
 =====================
