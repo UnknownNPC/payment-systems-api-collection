@@ -44,8 +44,8 @@ private[qiwi] class QiwiAPI(token: String,
       rows.orElse(10),
       Option(operation.orElse(ReqTransferType.ALL)),
       sources.asScala.toList,
-      Option(startEndDates.get),
-      Option(nextPage.get)
+      Option(startEndDates.orElse(null)),
+      Option(nextPage.orElse(null))
     )
   }
 

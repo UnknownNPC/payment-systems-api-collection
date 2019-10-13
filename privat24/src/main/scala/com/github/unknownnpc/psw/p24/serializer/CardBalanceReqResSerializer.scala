@@ -1,6 +1,6 @@
 package com.github.unknownnpc.psw.p24.serializer
 
-import com.github.unknownnpc.psw.api.Utils.safeParse
+import com.github.unknownnpc.psw.api.Utils.{safeParse, unPrettyOut}
 import com.github.unknownnpc.psw.api.{APIParseException, Serializer}
 import com.github.unknownnpc.psw.p24.model._
 import org.apache.http.client.methods.HttpPost

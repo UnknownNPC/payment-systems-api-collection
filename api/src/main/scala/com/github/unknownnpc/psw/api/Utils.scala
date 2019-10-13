@@ -7,4 +7,8 @@ object Utils {
     allCatch.either(fn).left.map(e => APIParseException(cause = e))
   }
 
+  def unPrettyOut(string: String): String = {
+    string.replaceAll(">\\s+<", "><")
+  }
+
 }

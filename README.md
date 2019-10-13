@@ -41,6 +41,12 @@ sbt clean compile
         <artifactId>privat24_2.12</artifactId>
         <version>X.X.X</version>
     </dependency>
+    <!-- AdvCash API -->
+    <dependency>
+        <groupId>com.github.unknownnpc.psw</groupId>
+        <artifactId>advcash_2.12</artifactId>
+        <version>X.X.X</version>
+    </dependency>
 </dependencies>
 ```
 #### Usage in java code
@@ -48,7 +54,8 @@ sbt clean compile
 P24API p24Api = P24API.getInstance(merchId, merchPass));
 QiwiAPI qiwiApi = QiwiAPI.getInstance(qiwiApiToken);
 // Requires KWM backup key(!)
-WebMoneyAPI webMoneyApi = WebMoneyAPI.getInstance("wimd", "kwm_pass", kwmBytesArr);        
+WebMoneyAPI webMoneyApi = WebMoneyAPI.getInstance("wimd", "kwm_pass", kwmBytesArr);   
+AdvCashAPI advCashAPI = AdvCashAPI.getInstance(api_name, api_password, api_email)     
 ```
 
 #### API details
@@ -61,3 +68,5 @@ WebMoneyAPI webMoneyApi = WebMoneyAPI.getInstance("wimd", "kwm_pass", kwmBytesAr
 | WebMoney  | Retrieve payments, interface X3  |[WM API docs](https://wiki.webmoney.ru/projects/webmoney/wiki/%D0%98%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81_X3)| wm.WebMoneyAPI#runX3Command | _Partially_ |
 | WebMoney  | Wallets balance, interface X9  |[WM API docs](https://wiki.webmoney.ru/projects/webmoney/wiki/%D0%98%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81_X9)| wm.WebMoneyAPI#runX9Command | _Partially_ |
 | WebMoney  | WM Signer  |[WM Signer docs](https://wiki.wmtransfer.com/projects/webmoney/wiki/WMSigner)| wm.signer.WMSigner | _Yes_ |
+| AdvCash  | Retrieve cards balance | [AdsCash API v1.9](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=2ahUKEwikuuqs5pnlAhXGR5oKHaUXBp8QFjABegQIBBAC&url=https%3A%2F%2Fadvcash.com%2Ffiles%2Fdocuments%2Fadvcash.merchantapi-1.9_en.pdf&usg=AOvVaw1Xyjhrk61SUA-Rd4vl0_63) | advcash.AdvCashAPI#retrieveBalancePerWallets | _Yes_ |
+| AdvCash | Retrieve transactions | [AdsCash API v1.9](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=2ahUKEwikuuqs5pnlAhXGR5oKHaUXBp8QFjABegQIBBAC&url=https%3A%2F%2Fadvcash.com%2Ffiles%2Fdocuments%2Fadvcash.merchantapi-1.9_en.pdf&usg=AOvVaw1Xyjhrk61SUA-Rd4vl0_63) | advcash.AdvCashAPI#retrieveTransactionsHistory | _Partially_ |
