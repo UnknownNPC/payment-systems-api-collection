@@ -1,4 +1,4 @@
-name := "payment-systems-wrapper"
+name := "payment-systems-api-collection"
 scalaVersion := "2.13.0"
 organization in ThisBuild := "com.github.unknownnpc.psw"
 
@@ -138,8 +138,8 @@ lazy val commonSettings = Seq(
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
 lazy val mavenPublishSettings = Seq(
-  homepage := Some(url("https://github.com/UnknownNPC/payment-systems-wrapper")),
-  licenses := Seq("MIT" -> url("https://github.com/UnknownNPC/payment-systems-wrapper/LICENSE.md")),
+  homepage := Some(url("https://github.com/UnknownNPC/payment-systems-api-collection")),
+  licenses := Seq("MIT" -> url("https://github.com/UnknownNPC/payment-systems-api-collection/LICENSE.md")),
   publishMavenStyle := true,
   publishArtifact in Test := false,
   pomIncludeRepository := { _ => false },
@@ -152,8 +152,8 @@ lazy val mavenPublishSettings = Seq(
   },
   scmInfo := Some(
     ScmInfo(
-      url("https://github.com/UnknownNPC/payment-systems-wrapper"),
-      "scm:git:git@github.com:UnknownNPC/payment-systems-wrapper.git"
+      url("https://github.com/UnknownNPC/payment-systems-api-collection"),
+      "scm:git:git@github.com:UnknownNPC/payment-systems-api-collection.git"
     )
   ),
   developers := List(
